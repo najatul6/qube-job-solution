@@ -54,6 +54,7 @@ const Home = () => {
               date={new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })} 
               category={post.category} 
               snippet={post.snippet}
+              views={post.views}
             />
           ))
         )}
