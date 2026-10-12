@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import useAxiosSecure from '../hooks/useAxiosSecure';
 import { toast } from 'react-toastify';
-import usePost from '../hooks/usePost'; 
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import usePost from '../../hooks/usePost';
 
 const EditPost = () => {
   const { id } = useParams();

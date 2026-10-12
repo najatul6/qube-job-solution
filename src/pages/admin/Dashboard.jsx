@@ -88,7 +88,7 @@ const Dashboard = () => {
             <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Adsterra</span>
           </div>
           <a
-            href="https://publishers.adsterra.com/dashboard/"
+            href="https://beta.publishers.adsterra.com/stats"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 w-full text-center bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
@@ -129,7 +129,7 @@ const Dashboard = () => {
                     <td className="p-4 font-bold text-indigo-900">{post.title}</td>
                     <td className="p-4"><span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-bold">{post.category}</span></td>
                     <td className="p-4">{new Date(post.createdAt).toLocaleDateString()}</td>
-                    <td className="p-4 text-right space-x-3">
+                    <td className="p-4 text-right flex justify-end gap-3">
                       <Link
                         to={`/admin/edit-post/${post._id}`}
                         className="bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-1.5 rounded-lg font-bold transition-colors text-xs flex items-center gap-1"
