@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AdminLayout from '../components/AdminLayout'; 
+import AdminLayout from '../components/AdminLayout';
 import PrivateRoute from './PrivateRoute';
 import Layout from '../components/Layout';
 
@@ -10,6 +10,7 @@ const BlogPost = React.lazy(() => import('../pages/BlogPost'));
 const Login = React.lazy(() => import('../pages/Login'));
 const Dashboard = React.lazy(() => import('../pages/admin/Dashboard'));
 const CreatePost = React.lazy(() => import('../pages/admin/CreatePost'));
+const EditPost = React.lazy(() => import('../pages/admin/EditPost'));
 
 // Loading Spinner Component (পেজ লোড হওয়ার সময় দেখাবে)
 const PageLoader = () => (
@@ -27,18 +28,22 @@ const AppRouter = () => {
           {/* Public Routes */}
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/post/:id" element={<Layout><BlogPost /></Layout>} />
-          
+
           {/* Login Route */}
           <Route path="/login" element={<Login />} />
-          
+
           {/* Private Admin Routes */}
-          <Route 
-            path="/admin/dashboard" 
-            element={<PrivateRoute><AdminLayout><Dashboard /></AdminLayout></PrivateRoute>} 
+          <Route
+            path="/admin/dashboard"
+            element={<PrivateRoute><AdminLayout><Dashboard /></AdminLayout></PrivateRoute>}
           />
-          <Route 
-            path="/admin/create-post" 
-            element={<PrivateRoute><AdminLayout><CreatePost /></AdminLayout></PrivateRoute>} 
+          <Route
+            path="/admin/create-post"
+            element={<PrivateRoute><AdminLayout><CreatePost /></AdminLayout></PrivateRoute>}
+          />
+          <Route
+            path="/admin/edit-post/:id"
+            element={<PrivateRoute><AdminLayout><EditPost /></AdminLayout></PrivateRoute>}
           />
         </Routes>
       </Suspense>
