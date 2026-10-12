@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
 import { logout } from '../../redux/features/authSlice';
 import usePosts from '../../hooks/usePosts';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
@@ -26,8 +26,8 @@ const Dashboard = () => {
       text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#4f46e5', 
-      cancelButtonColor: '#ef4444', 
+      confirmButtonColor: '#4f46e5',
+      cancelButtonColor: '#ef4444',
       confirmButtonText: 'Yes, delete it!'
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -39,7 +39,7 @@ const Dashboard = () => {
             icon: 'success',
             confirmButtonColor: '#4f46e5'
           });
-          refetch(); 
+          refetch();
         } catch (error) {
           toast.error("Failed to delete post.");
           console.error(error);
@@ -60,7 +60,7 @@ const Dashboard = () => {
           <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">Admin Dashboard</h1>
           <p className="text-gray-500 mt-1 font-medium">Welcome back, <span className="text-indigo-600">{user?.email || 'Admin'}</span></p>
         </div>
-        <button 
+        <button
           onClick={handleLogout}
           className="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-6 py-2.5 rounded-xl font-bold transition-all flex items-center gap-2 shadow-sm"
         >
@@ -69,35 +69,35 @@ const Dashboard = () => {
       </div>
 
       {/* Dynamic Stats Cards */}
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-  <div className="bg-linear-to-br from-indigo-500 to-purple-600 p-6 rounded-2xl text-white shadow-lg">
-    <h3 className="text-lg font-semibold opacity-90">Total Posts</h3>
-    <p className="text-4xl font-extrabold mt-2">{posts.length}</p>
-  </div>
-  <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
-    <div>
-      <h3 className="text-lg font-semibold text-gray-500">Categories</h3>
-      <p className="text-4xl font-extrabold text-gray-900 mt-2">{uniqueCategories}</p>
-    </div>
-  </div>
-  
-  {/* 🚀 Adsterra Earnings Card */}
-  <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
-    <div className="flex justify-between items-start mb-2">
-      <h3 className="text-lg font-semibold text-gray-500">Ad Earnings</h3>
-      <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Adsterra</span>
-    </div>
-    <a 
-      href="https://publishers.adsterra.com/dashboard/" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      className="mt-2 w-full text-center bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
-    >
-      <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-      Check Revenue
-    </a>
-  </div>
-</div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="bg-linear-to-br from-indigo-500 to-purple-600 p-6 rounded-2xl text-white shadow-lg">
+          <h3 className="text-lg font-semibold opacity-90">Total Posts</h3>
+          <p className="text-4xl font-extrabold mt-2">{posts.length}</p>
+        </div>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-500">Categories</h3>
+            <p className="text-4xl font-extrabold text-gray-900 mt-2">{uniqueCategories}</p>
+          </div>
+        </div>
+
+        {/* 🚀 Adsterra Earnings Card */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="text-lg font-semibold text-gray-500">Ad Earnings</h3>
+            <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Adsterra</span>
+          </div>
+          <a
+            href="https://publishers.adsterra.com/dashboard/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 w-full text-center bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
+          >
+            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Check Revenue
+          </a>
+        </div>
+      </div>
 
       {/* Manage Content Table */}
       <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100">
@@ -107,7 +107,7 @@ const Dashboard = () => {
             + Create New Post
           </Link>
         </div>
-        
+
         {posts.length === 0 ? (
           <div className="text-center py-12 text-gray-500 font-medium">
             No posts managed yet. Click "Create New Post" to add one.
@@ -130,7 +130,13 @@ const Dashboard = () => {
                     <td className="p-4"><span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-bold">{post.category}</span></td>
                     <td className="p-4">{new Date(post.createdAt).toLocaleDateString()}</td>
                     <td className="p-4 text-right space-x-3">
-                      <button className="text-blue-600 hover:text-blue-800 font-bold transition-colors">Edit</button>
+                      <Link
+                        to={`/admin/edit-post/${post._id}`}
+                        className="bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3 py-1.5 rounded-lg font-bold transition-colors text-xs flex items-center gap-1"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        Edit
+                      </Link>
                       <button onClick={() => handleDelete(post._id)} className="text-red-500 hover:text-red-700 font-bold transition-colors">Delete</button>
                     </td>
                   </tr>
