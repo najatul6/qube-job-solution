@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../redux/features/authSlice';
+import { logout } from '../../redux/features/authSlice';
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.auth);
@@ -31,12 +31,12 @@ const Dashboard = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-6 rounded-2xl text-white shadow-lg relative overflow-hidden">
+        <div className="bg-linear-to from-indigo-500 to-purple-600 p-6 rounded-2xl text-white shadow-lg relative overflow-hidden">
           <div className="relative z-10">
             <h3 className="text-lg font-semibold opacity-90">Total Posts</h3>
             <p className="text-4xl font-extrabold mt-2">12</p>
           </div>
-          <svg className="absolute right-[-20px] bottom-[-20px] w-32 h-32 text-white opacity-20" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
+          <svg className="absolute -right-5 -bottom-5 w-32 h-32 text-white opacity-20" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
         </div>
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
           <div>
