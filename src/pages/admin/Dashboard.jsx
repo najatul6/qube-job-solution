@@ -1,10 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { logout } from '../redux/features/authSlice';
 import { toast } from 'react-toastify';
-import Swal from 'sweetalert2'; // 🚀 SweetAlert Import
-import usePosts from '../hooks/usePosts';
-import useAxiosSecure from '../hooks/useAxiosSecure';
+import Swal from 'sweetalert2'; 
+import { logout } from '../../redux/features/authSlice';
+import usePosts from '../../hooks/usePosts';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.auth);
