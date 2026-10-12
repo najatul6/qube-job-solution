@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
     <div className="min-h-screen flex flex-col bg-gray-50 font-sans text-gray-800">
       <Navbar />
 
-      <div className="flex-grow container mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
+      <div className="grow container mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
         {/* Main Feed Content (70%) */}
         <main className="w-full md:w-2/3">
           {children}
