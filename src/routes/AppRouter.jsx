@@ -22,19 +22,13 @@ const AppRouter = () => {
         {/* Private Admin Routes (Ad-Free, Clean Workspace) */}
         <Route
           path="/admin/dashboard"
-          element={
-            <PrivateRoute>
-              <AdminLayout>
-                <Dashboard />
-              </AdminLayout>
-            </PrivateRoute>
-          }
+          element={<PrivateRoute><AdminLayout><Dashboard /></AdminLayout></PrivateRoute>}
+        />
+        <Route
+          path="/admin/create-post"
+          element={<PrivateRoute><AdminLayout><CreatePost /></AdminLayout></PrivateRoute>}
         />
       </Routes>
-      <Route
-        path="/admin/create-post"
-        element={<PrivateRoute><AdminLayout><CreatePost /></AdminLayout></PrivateRoute>}
-      />
     </BrowserRouter>
   );
 };
