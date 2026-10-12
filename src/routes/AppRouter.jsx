@@ -1,34 +1,20 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from '../components/Layout';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from '../Layout'; // আপনার লেআউটের পাথ অনুযায়ী ঠিক করে নেবেন
 import Home from '../pages/Home';
-import Login from '../pages/Login';
-import AdminDashboard from '../pages/AdminDashboard';
-import ProtectedRoute from './ProtectedRoute';
+import BlogPost from '../pages/BlogPost';
 
 const AppRouter = () => {
   return (
-    <Router>
-      <Routes>
-        
-        {/* পাবলিক রাউটস (যেগুলো সবাই দেখবে) */}
-        <Route path="/" element={
-          <Layout>
-            <Home />
-          </Layout>
-        } />
-        
-        {/* অ্যাডমিন লগিন পেজ (লগিন পেজে সাইডবার বা লেআউট দরকার নেই) */}
-        <Route path="/login" element={<Login />} />
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-        {/* প্রাইভেট/অ্যাডমিন রাউটস (শুধু অ্যাডমিন দেখবে) */}
-        <Route path="/admin" element={
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        } />
+          <Route path="/post/:id" element={<BlogPost />} />
 
-      </Routes>
-    </Router>
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   );
 };
 
