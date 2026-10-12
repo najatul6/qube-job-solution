@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/features/authSlice';
 import useAxiosPublic from '../hooks/useAxiosPublic';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -31,13 +32,14 @@ const Login = () => {
 
       // Redux স্টেট আপডেট করা
       dispatch(loginSuccess({ user: { email }, token }));
-      
+      toast.success('Login Successful! Welcome to Admin Panel.');
       setLoading(false);
       // লগিন শেষে অ্যাডমিন ড্যাশবোর্ডে পাঠিয়ে দেওয়া
       navigate('/admin/dashboard'); 
       
     } catch (err) {
       setLoading(false);
+      toast.error(err.response?.data?.message || 'Login failed! Please check your credentials.');
       setError(err.response?.data?.message || 'Login failed! Please check your credentials.');
     }
   };
