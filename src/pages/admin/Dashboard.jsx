@@ -52,6 +52,7 @@ const Dashboard = () => {
 
   const uniqueCategories = [...new Set(posts.map(post => post.category))].length;
 
+  const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0);
   return (
     <div className="w-full">
       {/* Top Bar */}
@@ -74,6 +75,15 @@ const Dashboard = () => {
           <h3 className="text-lg font-semibold opacity-90">Total Posts</h3>
           <p className="text-4xl font-extrabold mt-2">{posts.length}</p>
         </div>
+
+        {/* 🚀 Total Views Card */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-500">Total Views</h3>
+            <p className="text-4xl font-extrabold text-indigo-600 mt-2">{totalViews}</p>
+          </div>
+        </div>
+
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
           <div>
             <h3 className="text-lg font-semibold text-gray-500">Categories</h3>
@@ -119,6 +129,7 @@ const Dashboard = () => {
                 <tr className="bg-gray-50 text-gray-500 text-sm border-b border-gray-200">
                   <th className="p-4 font-semibold rounded-tl-xl">Title</th>
                   <th className="p-4 font-semibold">Category</th>
+                  <th className="p-4 font-semibold text-center">Views</th>
                   <th className="p-4 font-semibold">Date</th>
                   <th className="p-4 font-semibold text-right rounded-tr-xl">Actions</th>
                 </tr>
@@ -128,6 +139,10 @@ const Dashboard = () => {
                   <tr key={post._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                     <td className="p-4 font-bold text-indigo-900">{post.title}</td>
                     <td className="p-4"><span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-bold">{post.category}</span></td>
+                    {/* 🚀 Show Post Views */}
+                    <td className="p-4 text-center font-bold text-indigo-600 bg-indigo-50/50">
+                      {post.views || 0}
+                    </td>
                     <td className="p-4">{new Date(post.createdAt).toLocaleDateString()}</td>
                     <td className="p-4 text-right flex justify-end gap-3">
                       <Link
