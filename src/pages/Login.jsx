@@ -1,39 +1,67 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../redux/features/authSlice';
+import useAxiosPublic from '../hooks/useAxiosPublic';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const axiosPublic = useAxiosPublic();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // API কল এবং Redux লগিন লজিক পরে অ্যাড করা হবে
-    console.log("Login Attempt:", email, password);
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await axiosPublic.post('/api/auth/login', {
+        email,
+        password
+      });
+
+      // লগিন সফল হলে টোকেন লোকাল স্টোরেজে সেভ করা
+      const token = response.data.token;
+      localStorage.setItem('access-token', token);
+
+      // Redux স্টেট আপডেট করা
+      dispatch(loginSuccess({ user: { email }, token }));
+      
+      setLoading(false);
+      // লগিন শেষে অ্যাডমিন ড্যাশবোর্ডে পাঠিয়ে দেওয়া
+      navigate('/admin/dashboard'); 
+      
+    } catch (err) {
+      setLoading(false);
+      setError(err.response?.data?.message || 'Login failed! Please check your credentials.');
+    }
   };
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden relative">
-        
-        {/* Top Decorative Gradient */}
         <div className="h-3 w-full bg-gradient-to-r from-indigo-500 to-purple-600"></div>
         
         <div className="p-8 sm:p-10">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
-              Admin Portal
-            </h2>
-            <p className="text-sm text-gray-500 mt-2 font-medium">
-              Sign in to manage your job portal and notes
-            </p>
+            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Admin Portal</h2>
+            <p className="text-sm text-gray-500 mt-2 font-medium">Sign in to manage your job portal</p>
           </div>
+
+          {error && (
+            <div className="mb-4 bg-red-50 text-red-600 p-3 rounded-lg text-sm font-medium border border-red-100 text-center">
+              {error}
+            </div>
+          )}
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">
-                Email Address
-              </label>
+              <label className="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
               <input
                 type="email"
                 required
@@ -45,9 +73,7 @@ const Login = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">
-                Password
-              </label>
+              <label className="block text-sm font-bold text-gray-700 mb-2">Password</label>
               <input
                 type="password"
                 required
@@ -60,10 +86,10 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg active:scale-[0.98] flex justify-center items-center gap-2"
+              disabled={loading}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-bold py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg active:scale-[0.98] flex justify-center items-center gap-2"
             >
-              Sign In to Dashboard
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+              {loading ? 'Signing in...' : 'Sign In to Dashboard'}
             </button>
           </form>
         </div>
