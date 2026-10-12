@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { logout } from '../redux/features/authSlice';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2'; // 🚀 SweetAlert Import
 import usePosts from '../hooks/usePosts';
 import useAxiosSecure from '../hooks/useAxiosSecure';
 
@@ -10,32 +11,45 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
-  
-  // React Query ব্যবহার করে সব পোস্ট আনছি
   const [posts, isLoading, refetch] = usePosts();
 
   const handleLogout = () => {
     dispatch(logout());
+    toast.success('You have been logged out.');
     navigate('/login');
   };
 
-  // পোস্ট ডিলিট করার ফাংশন
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this note?")) {
-      try {
-        await axiosSecure.delete(`/api/posts/${id}`);
-        toast.success("Post deleted successfully!");
-        refetch();
-      } catch (error) {
-        toast.error("Failed to delete post.");
-        console.error(error);
+  // 🚀 SweetAlert 
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#4f46e5', 
+      cancelButtonColor: '#ef4444', 
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axiosSecure.delete(`/api/posts/${id}`);
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Your note has been deleted.',
+            icon: 'success',
+            confirmButtonColor: '#4f46e5'
+          });
+          refetch(); 
+        } catch (error) {
+          toast.error("Failed to delete post.");
+          console.error(error);
+        }
       }
-    }
+    });
   };
 
   if (isLoading) return <div className="p-10 text-center text-gray-500 font-bold">Loading Dashboard Data...</div>;
 
-  // ডাইনামিক ক্যাটাগরি কাউন্ট করা
   const uniqueCategories = [...new Set(posts.map(post => post.category))].length;
 
   return (
