@@ -14,6 +14,14 @@ const AppRouter = () => {
           <Route path="/post/:id" element={<BlogPost />} />
 
           <Route path="/login" element={<Login />} />
+          <Route 
+            path="/admin/dashboard" 
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            } 
+          />
         </Routes>
       </Layout>
     </BrowserRouter>
