@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { store } from './redux/store';
 import AppRouter from './routes/AppRouter';
 import './index.css';
+import { HelmetProvider } from 'react-helmet-async';
 
 const queryClient = new QueryClient();
 
