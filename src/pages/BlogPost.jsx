@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import usePost from '../hooks/usePost';
 
 const BlogPost = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [post, isLoading] = usePost(id);
 
   if (isLoading) {
@@ -46,7 +46,7 @@ const BlogPost = () => {
 
       {/* Main Post Container */}
       <article className="bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-gray-100 relative overflow-hidden">
-        
+
         {/* Top Gradient Bar */}
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500"></div>
 
@@ -71,15 +71,15 @@ const BlogPost = () => {
         </h1>
 
         {/* 🚀 Dynamic HTML Content from React-Quill */}
-        <div 
+        <div
           className="prose prose-lg prose-indigo max-w-none prose-headings:font-bold prose-a:text-indigo-600 prose-img:rounded-xl text-gray-700"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </article>
 
       {/* Bottom Ad Placement */}
-      <div className="w-full h-22.5 bg-gray-100 border border-gray-200 flex items-center justify-center mt-10 text-gray-400 rounded-xl shadow-inner text-sm">
-        <span className="bg-white px-4 py-2 rounded-lg shadow-sm font-medium">Article Bottom Ad (728x90)</span>
+      <div className="w-full bg-gray-50 border border-gray-200 flex items-center justify-center mt-10 rounded-xl shadow-inner overflow-hidden">
+        <AdBanner width={728} height={90} dataKey="b3b1ebd27ac92c5620d056485b4c28f5" />
       </div>
     </div>
   );
