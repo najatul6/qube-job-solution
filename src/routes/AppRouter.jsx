@@ -14,6 +14,9 @@ const EditPost = React.lazy(() => import('../pages/admin/EditPost'));
 const Category = React.lazy(() => import('../pages/Category'));
 const Contact = React.lazy(() => import('../pages/Contact'));
 const PrivacyPolicy = React.lazy(() => import('../pages/PrivacyPolicy'));
+const About = React.lazy(() => import('../pages/About'));
+const Terms = React.lazy(() => import('../pages/Terms'));
+const Disclaimer = React.lazy(() => import('../pages/Disclaimer'));
 
 // Loading Spinner Component (পেজ লোড হওয়ার সময় দেখাবে)
 const PageLoader = () => (
@@ -36,7 +39,7 @@ const AppRouter = () => {
           <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
 
 
-          
+
           {/* Login Route */}
           <Route path="/login" element={<Login />} />
 
