@@ -4,10 +4,8 @@ const AdBanner = ({ width, height, dataKey }) => {
   const bannerRef = useRef(null);
 
   useEffect(() => {
-    // অ্যাড যদি একবার লোড হয়ে যায়, তবে দ্বিতীয়বার লোড হওয়া বন্ধ করবে
     if (!bannerRef.current || bannerRef.current.hasChildNodes()) return;
 
-    // Adsterra এর অপশন স্ক্রিপ্ট
     const confScript = document.createElement('script');
     confScript.type = 'text/javascript';
     confScript.innerHTML = `atOptions = {
@@ -18,13 +16,12 @@ const AdBanner = ({ width, height, dataKey }) => {
       'params' : {}
     };`;
 
-    // Adsterra এর মেইন স্ক্রিপ্ট
     const invokeScript = document.createElement('script');
     invokeScript.type = 'text/javascript';
-    invokeScript.src = `//www.highperformanceformat.com/${dataKey}/invoke.js`;
+    // 🚀 আপনার দেওয়া নতুন লিংক অনুযায়ী আপডেট করা হয়েছে
+    invokeScript.src = `https://bicea.org/22/${dataKey}`;
     invokeScript.async = true;
 
-    // স্ক্রিপ্টগুলো আমাদের div এর ভেতর পুশ করা
     bannerRef.current.appendChild(confScript);
     bannerRef.current.appendChild(invokeScript);
   }, [dataKey, height, width]);
