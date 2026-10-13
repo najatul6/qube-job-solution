@@ -12,6 +12,8 @@ const Dashboard = React.lazy(() => import('../pages/admin/Dashboard'));
 const CreatePost = React.lazy(() => import('../pages/admin/CreatePost'));
 const EditPost = React.lazy(() => import('../pages/admin/EditPost'));
 const Category = React.lazy(() => import('../pages/Category'));
+const Contact = React.lazy(() => import('../pages/Contact'));
+const PrivacyPolicy = React.lazy(() => import('../pages/PrivacyPolicy'));
 
 // Loading Spinner Component (পেজ লোড হওয়ার সময় দেখাবে)
 const PageLoader = () => (
@@ -30,6 +32,7 @@ const AppRouter = () => {
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/post/:id" element={<Layout><BlogPost /></Layout>} />
           <Route path="/category/:categoryName" element={<Layout><Category /></Layout>} />
+          
           {/* Login Route */}
           <Route path="/login" element={<Login />} />
 
