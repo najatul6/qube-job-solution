@@ -1,7 +1,44 @@
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import useAxiosPublic from '../hooks/useAxiosPublic';
+
 const Contact = () => {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [loading, setLoading] = useState(false);
+  const axiosPublic = useAxiosPublic();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // ভ্যালিডেশন চেক
+    if (!formData.name || !formData.email || !formData.message) {
+      return toast.error("Please fill out all fields.");
+    }
+
+    setLoading(true);
+    try {
+      // 🚀 ব্যাকএন্ডে ডেটা পাঠানোর API Call
+      await axiosPublic.post('/api/contact', formData);
+      
+      toast.success('Message sent successfully! We will get back to you soon.');
+      
+      // সাবমিট হওয়ার পর ফর্ম ক্লিয়ার করে দেওয়া
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to send message. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-12 min-h-screen">
-      <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-colors duration-300">
+      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-colors duration-300">
         <div className="grid grid-cols-1 md:grid-cols-2">
           
           {/* Contact Info Section */}
@@ -24,21 +61,46 @@ const Contact = () => {
 
           {/* Contact Form Section */}
           <div className="p-10">
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Your Name</label>
-                <input type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" placeholder="John Doe" />
+                <label className="block text-sm font-bold text-gray-700 mb-2">Your Name</label>
+                <input 
+                  type="text" 
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" 
+                  placeholder="John Doe" 
+                />
               </div>
               <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
-                <input type="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" placeholder="john@example.com" />
+                <label className="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
+                <input 
+                  type="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" 
+                  placeholder="john@example.com" 
+                />
               </div>
               <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Message</label>
-                <textarea rows="4" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" placeholder="How can we help you?"></textarea>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Message</label>
+                <textarea 
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows="4" 
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" 
+                  placeholder="How can we help you?"
+                ></textarea>
               </div>
-              <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-md active:scale-95">
-                Send Message
+              <button 
+                type="submit" 
+                disabled={loading}
+                className={`w-full text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-md active:scale-95 ${loading ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+              >
+                {loading ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
