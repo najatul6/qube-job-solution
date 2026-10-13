@@ -1,9 +1,10 @@
+import AdBanner from '../components/AdBanner';
 import PostCard from '../components/PostCard';
 import usePosts from '../hooks/usePosts'; // 🚀 Advanced hook import
 
 const Home = () => {
   // Just ek line e shob data, loading state chole aslo!
-  const [posts, isLoading] = usePosts(); 
+  const [posts, isLoading] = usePosts();
 
   return (
     <div className="w-full">
@@ -14,7 +15,7 @@ const Home = () => {
             🎯 Platform for IT Professionals
           </span>
           <h1 className="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
-            Crack Your Dream Govt Job <br className="hidden md:block"/> & Master Tech Skills
+            Crack Your Dream Govt Job <br className="hidden md:block" /> & Master Tech Skills
           </h1>
           <p className="text-indigo-100 text-lg mb-8 max-w-2xl leading-relaxed">
             Get daily byte-sized notes on Computer Technology, Networking, DBMS, and Mathematics. Perfectly tailored for Sub-Assistant Engineer & 10th-grade IT roles.
@@ -29,14 +30,14 @@ const Home = () => {
           </div>
         </div>
       </div>
-      
+
       {/* 728x90 Horizontal Ad Placement */}
-      <div className="w-full h-[90px] bg-gray-100 border border-gray-200 flex items-center justify-center mb-10 text-gray-400 rounded-xl shadow-inner text-sm">
-        <span className="bg-white px-4 py-2 rounded-lg shadow-sm font-medium">Advertisement (728x90)</span>
+      <div className="w-full bg-gray-50 border border-gray-100 flex items-center justify-center mb-10 rounded-xl shadow-inner overflow-hidden">
+        <AdBanner width={728} height={90} dataKey="b3b1ebd27ac92c5620d056485b4c28f5" />
       </div>
 
       <div className="flex justify-between items-end mb-6 border-b-2 border-gray-100 pb-4">
-         <h2 className="text-2xl font-bold text-gray-800">Latest Notes & Updates</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Latest Notes & Updates</h2>
       </div>
 
       {/* Dynamic Data Mapping */}
@@ -47,12 +48,12 @@ const Home = () => {
           <div className="text-center py-10 text-gray-500">No posts found.</div>
         ) : (
           posts.map((post) => (
-            <PostCard 
+            <PostCard
               key={post._id}
-              id={post._id} 
-              title={post.title} 
-              date={new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })} 
-              category={post.category} 
+              id={post._id}
+              title={post.title}
+              date={new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+              category={post.category}
               snippet={post.snippet}
               views={post.views}
             />
