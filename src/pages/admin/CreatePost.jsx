@@ -11,7 +11,7 @@ const CreatePost = () => {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-  
+
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
@@ -27,10 +27,10 @@ const CreatePost = () => {
     try {
       // useAxiosSecure ব্যবহার করায় টোকেন অটোমেটিক হেডারে চলে যাবে
       await axiosSecure.post('/api/posts', formData);
-      
+
       setMessage({ type: 'success', text: 'Post created successfully!' });
       setFormData({ title: '', category: 'Networking', snippet: '', content: '' });
-      
+
       // ২ সেকেন্ড পর ড্যাশবোর্ডে নিয়ে যাবে
       setTimeout(() => navigate('/admin/dashboard'), 2000);
     } catch (error) {
@@ -73,12 +73,12 @@ const CreatePost = () => {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all bg-gray-50 focus:bg-white"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
             >
-              <option value="Networking">Networking</option>
-              <option value="DBMS">DBMS</option>
-              <option value="Mathematics">Mathematics</option>
-              <option value="Job Circulars">Job Circulars</option>
+              <option value="Govt Jobs">Govt Jobs</option>
+              <option value="IT-Private Jobs">IT/Private Jobs</option>
+              <option value="Tech Notes">Tech Notes</option>
+              <option value="Study Material">Study Material</option>
             </select>
           </div>
         </div>
