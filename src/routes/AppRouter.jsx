@@ -32,6 +32,10 @@ const AppRouter = () => {
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/post/:id" element={<Layout><BlogPost /></Layout>} />
           <Route path="/category/:categoryName" element={<Layout><Category /></Layout>} />
+          <Route path="/contact" element={<Layout><Contact /></Layout>} />
+          <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
+
+
           
           {/* Login Route */}
           <Route path="/login" element={<Login />} />
