@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
+import AdBanner from './AdBanner';
 
 const Footer = () => {
   return (
     <footer className="bg-white border-t mt-auto pt-10 pb-6">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          
+
           {/* Column 1: About */}
           <div>
             <h3 className="text-xl font-bold text-indigo-700 mb-4">
@@ -38,7 +39,9 @@ const Footer = () => {
               <li><Link to="/disclaimer" className="hover:text-indigo-600 transition-colors">Disclaimer</Link></li>
             </ul>
           </div>
-
+          <div className="w-full flex justify-center md:hidden my-4">
+            <AdBanner width={320} height={50} dataKey="e4095009000197e7d9ad4881df1372f9" />
+          </div>
         </div>
 
         {/* Bottom Copyright */}
