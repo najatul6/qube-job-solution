@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <div className="w-full">
       {/* 🚀 Vibrant Hero Section */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 md:p-10 text-white mb-10 shadow-lg relative overflow-hidden">
+      <div className="bg-linear-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 md:p-10 text-white mb-10 shadow-lg relative overflow-hidden">
         <div className="relative z-10">
           <span className="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-semibold mb-4 inline-block backdrop-blur-sm">
             🎯 Platform for IT Professionals
