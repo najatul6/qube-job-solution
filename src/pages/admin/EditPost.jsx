@@ -6,10 +6,10 @@ import usePost from '../../hooks/usePost';
 
 const EditPost = () => {
   const { id } = useParams();
-  const [post, isLoading] = usePost(id); 
+  const [post, isLoading] = usePost(id);
   const [formData, setFormData] = useState({ title: '', category: '', snippet: '', content: '' });
   const [saving, setSaving] = useState(false);
-  
+
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
@@ -58,11 +58,16 @@ const EditPost = () => {
           </div>
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2">Category</label>
-            <select name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 outline-none transition-all">
-              <option value="Networking">Networking</option>
-              <option value="DBMS">DBMS</option>
-              <option value="Mathematics">Mathematics</option>
-              <option value="Job Circulars">Job Circulars</option>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none"
+            >
+              <option value="Govt Jobs">Govt Jobs</option>
+              <option value="IT-Private Jobs">IT/Private Jobs</option>
+              <option value="Tech Notes">Tech Notes</option>
+              <option value="Study Material">Study Material</option>
             </select>
           </div>
         </div>
