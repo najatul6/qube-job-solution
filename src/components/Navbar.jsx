@@ -1,23 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'; // 🚀 Redux Hooks
+import { toggleTheme } from '../redux/features/themeSlice'; // 🚀 Redux Action
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  // 🚀 Dark Mode State (Local Storage থেকে চেক করবে আগে কী সেভ করা ছিল)
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem('theme') === 'dark' || false
-  );
+  // 🚀 Redux থেকে থিমের স্টেট এবং ডিসপ্যাচ নিয়ে আসছি
+  const { isDarkMode } = useSelector((state) => state.theme);
+  const dispatch = useDispatch();
 
-  // 🚀 ডার্ক মোড টগল হলে HTML ট্যাগে 'dark' ক্লাস অ্যাড/রিমুভ করবে
+  // Redux স্টেট চেঞ্জ হলে HTML ট্যাগে dark ক্লাস অ্যাড বা রিমুভ করবে
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
     }
   }, [isDarkMode]);
 
@@ -46,21 +45,21 @@ const Navbar = () => {
     <>
       <nav className="bg-white dark:bg-gray-900 border-b dark:border-gray-800 shadow-sm sticky top-0 z-40 transition-colors duration-300">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          {/* Logo */}
+          
           <Link to="/" className="text-2xl font-bold text-indigo-700 dark:text-indigo-500 tracking-tight">
             Qube <span className="text-gray-800 dark:text-gray-200">Job Solution</span>
           </Link>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex gap-6 font-medium text-gray-600 dark:text-gray-300 items-center">
             {menuItems.map((item, index) => (
               <Link key={index} to={item.path} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                 {item.title}
               </Link>
             ))}
-            {/* 🚀 Desktop Dark Mode Button */}
+            
+            {/* 🚀 Redux Dispatch দিয়ে ডার্ক মোড টগল করা হচ্ছে */}
             <button 
-              onClick={() => setIsDarkMode(!isDarkMode)}
+              onClick={() => dispatch(toggleTheme())}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors border dark:border-gray-700" 
               title="Toggle Dark Mode"
             >
@@ -68,11 +67,10 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-4">
-             {/* 🚀 Mobile Dark Mode Button (Navbar-এ) */}
+             {/* 🚀 Mobile Dark Mode Button */}
              <button 
-              onClick={() => setIsDarkMode(!isDarkMode)}
+              onClick={() => dispatch(toggleTheme())}
               className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
             >
                {isDarkMode ? '☀️' : '🌙'} 
