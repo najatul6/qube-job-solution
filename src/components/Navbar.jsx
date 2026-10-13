@@ -24,7 +24,7 @@ const Navbar = () => {
   const menuItems = [
     { title: 'Home', path: '/' },
     { title: 'Govt Jobs', path: '/category/govt-jobs' },
-    { title: 'IT/Private Jobs', path: '/category/private-jobs' },
+    { title: 'IT/Private Jobs', path: '/category/it-private-jobs' },
     { title: 'Tech Notes', path: '/category/tech-notes' },
     { title: 'Study Material', path: '/category/study-material' },
     { title: 'Contact', path: '/contact' }
