@@ -37,7 +37,9 @@ const AppRouter = () => {
           <Route path="/category/:categoryName" element={<Layout><Category /></Layout>} />
           <Route path="/contact" element={<Layout><Contact /></Layout>} />
           <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
-
+          <Route path="/about" element={<Layout><About /></Layout>} />
+          <Route path="/terms-conditions" element={<Layout><Terms /></Layout>} />
+          <Route path="/disclaimer" element={<Layout><Disclaimer /></Layout>} />
 
 
           {/* Login Route */}
