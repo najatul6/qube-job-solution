@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { store } from './redux/store';
 import AppRouter from './routes/AppRouter';
-import './index.css'; 
+import './index.css';
 
 const queryClient = new QueryClient();
 
@@ -14,8 +14,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <AppRouter />
-        <ToastContainer position="top-right" autoClose={3000} />
+        <HelmetProvider>
+          <AppRouter />
+          <ToastContainer position="top-right" autoClose={3000} />
+        </HelmetProvider>
       </QueryClientProvider>
     </Provider>
   </React.StrictMode>
