@@ -1,9 +1,15 @@
 import { useEffect } from "react";
 
 const PrivacyPolicy = () => {
+
     useEffect(() => {
-        window.scrollTo(0, 0);
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
     }, []);
+
     return (
         <div className="container mx-auto px-4 py-12 min-h-screen">
             <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300">
