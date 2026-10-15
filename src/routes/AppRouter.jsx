@@ -10,6 +10,7 @@ const BlogPost = React.lazy(() => import('../pages/BlogPost'));
 const Login = React.lazy(() => import('../pages/Login'));
 const Dashboard = React.lazy(() => import('../pages/admin/Dashboard'));
 const CreatePost = React.lazy(() => import('../pages/admin/CreatePost'));
+const CategoryManager = React.lazy(() => import('../pages/admin/CategoryManager'));
 const EditPost = React.lazy(() => import('../pages/admin/EditPost'));
 const Category = React.lazy(() => import('../pages/Category'));
 const Contact = React.lazy(() => import('../pages/Contact'));
