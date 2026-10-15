@@ -13,7 +13,7 @@ const Footer = () => {
               Qube <span className="text-gray-800">Job Solution</span>
             </h3>
             <p className="text-gray-500 text-sm leading-relaxed mb-4">
-              Your ultimate destination for Diploma Computer Technology notes, IT sector career guidelines, and the latest government job circulars in Bangladesh.
+              Your ultimate destination for Government & Private Job notes, career guidelines, and the latest government and private job circulars in Bangladesh.
             </p>
           </div>
 
