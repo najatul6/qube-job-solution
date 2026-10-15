@@ -21,7 +21,7 @@ const AdminLayout = ({ children }) => {
   return (
     <div className="h-screen flex overflow-hidden bg-gray-100 font-sans text-gray-800">
 
-      <aside className="w-64 flex-shrink-0 bg-indigo-900 text-white flex flex-col shadow-xl">
+      <aside className="w-64 shrink-0 bg-indigo-900 text-white flex flex-col shadow-xl">
         <div className="p-6 text-2xl font-extrabold border-b border-indigo-800 tracking-wider">
           Qube<span className="text-indigo-400">Admin</span>
         </div>
@@ -32,6 +32,9 @@ const AdminLayout = ({ children }) => {
           </NavLink>
           <NavLink to="/admin/create-post" className={navClass}>
             ✍️ Create Post
+          </NavLink>
+          <NavLink to="/admin/post" className={navClass}>
+            🚨 Post Manager
           </NavLink>
           <NavLink
             to="/admin/categories"

@@ -11,6 +11,7 @@ const Login = React.lazy(() => import('../pages/Login'));
 const Dashboard = React.lazy(() => import('../pages/admin/Dashboard'));
 const CreatePost = React.lazy(() => import('../pages/admin/CreatePost'));
 const CategoryManager = React.lazy(() => import('../pages/admin/CategoryManager'));
+const PostManager = React.lazy(() => import('../pages/admin/PostManager'));
 const EditPost = React.lazy(() => import('../pages/admin/EditPost'));
 const Category = React.lazy(() => import('../pages/Category'));
 const Contact = React.lazy(() => import('../pages/Contact'));
@@ -58,6 +59,10 @@ const AppRouter = () => {
           <Route
             path="/admin/create-post"
             element={<PrivateRoute><AdminLayout><CreatePost /></AdminLayout></PrivateRoute>}
+          />
+          <Route
+            path="/admin/posts"
+            element={<PrivateRoute><AdminLayout><PostManager /></AdminLayout></PrivateRoute>}
           />
           <Route
             path="/admin/edit-post/:id"
