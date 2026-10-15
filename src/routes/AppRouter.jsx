@@ -31,7 +31,7 @@ const PageLoader = () => (
       <div className="absolute h-full w-full animate-[spin_3s_linear_infinite] rounded-2xl border-4 border-indigo-200/50"></div>
       
       {/* Inner reverse rotating solid cube */}
-      <div className="absolute h-14 w-14 animate-[spin_2s_linear_infinite_reverse] rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 shadow-lg shadow-indigo-200"></div>
+      <div className="absolute h-14 w-14 animate-[spin_2s_linear_infinite_reverse] rounded-xl bg-linear-to-tr from-indigo-600 to-purple-600 shadow-lg shadow-indigo-200"></div>
       
       {/* Center 'Q' */}
       <span className="z-10 text-3xl font-extrabold text-white">Q</span>

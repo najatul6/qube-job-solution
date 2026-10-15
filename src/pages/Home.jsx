@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import AdBanner from '../components/AdBanner';
 import PostCard from '../components/PostCard';
 import usePosts from '../hooks/usePosts'; // 🚀 Advanced hook import
@@ -21,9 +22,9 @@ const Home = () => {
             Get daily byte-sized notes on Computer Technology, Networking, DBMS, and Mathematics. Perfectly tailored for Sub-Assistant Engineer & 10th-grade IT roles.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="bg-white text-indigo-700 px-6 py-3 rounded-lg font-bold shadow-md hover:bg-gray-50 transition-all hover:scale-105 active:scale-95">
+            <Link to={"/category/tech-notes"} className="bg-white text-indigo-700 px-6 py-3 rounded-lg font-bold shadow-md hover:bg-gray-50 transition-all hover:scale-105 active:scale-95">
               Start Reading Today
-            </button>
+            </Link>
             <button className="bg-indigo-800/50 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-indigo-800 transition-all border border-indigo-400 backdrop-blur-sm">
               View Job Circulars
             </button>
