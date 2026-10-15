@@ -1,164 +1,89 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import useAxiosSecure from '../../hooks/useAxiosSecure';
-import ReactQuill from 'react-quill-new';
-import 'react-quill-new/dist/quill.snow.css';
+import { Link } from 'react-router-dom';
+import useAxiosSecure from '../hooks/useAxiosSecure'; 
+import usePosts from '../hooks/usePosts'; 
+import AdBanner from './AdBanner';
 
-const EditPost = () => {
-  const { id } = useParams();
-  const [formData, setFormData] = useState({
-    title: '',
-    category: 'Govt Jobs',
-    snippet: '',
-    metaTitle: '',
-    metaDescription: '',
-    keywords: ''
-  });
+const Sidebar = () => {
+  const [posts, isLoading] = usePosts();
+  const axiosSecure = useAxiosSecure(); 
   
-  const [content, setContent] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(true);
-  const [message, setMessage] = useState({ type: '', text: '' });
-
-  const axiosSecure = useAxiosSecure();
-  const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [isCategoryLoading, setIsCategoryLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPostData = async () => {
+    const fetchCategories = async () => {
       try {
-        const res = await axiosSecure.get(`/api/posts/${id}`);
-        const data = res.data;
-        
-        setFormData({
-          title: data.title || '',
-          category: data.category || 'Govt Jobs',
-          snippet: data.snippet || '',
-          metaTitle: data.metaTitle || '',
-          metaDescription: data.metaDescription || '',
-          keywords: data.keywords || ''
-        });
-        setContent(data.content || '');
+        const { data } = await axiosSecure.get('/api/categories');
+        if (Array.isArray(data)) {
+          setCategories(data);
+        }
       } catch (error) {
-        setMessage({ type: 'error', text: 'Failed to fetch post details.' });
+        console.error("Error fetching categories:", error);
       } finally {
-        setFetching(false);
+        setIsCategoryLoading(false);
       }
     };
-    fetchPostData();
-  }, [id, axiosSecure]);
+    fetchCategories();
+  }, [axiosSecure]); 
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!content || content === '<p><br></p>') {
-      return setMessage({ type: 'error', text: 'Post content cannot be empty!' });
+  const categoryCounts = posts?.reduce((acc, post) => {
+    const catSlug = post.category;
+    if (catSlug) {
+      acc[catSlug] = (acc[catSlug] || 0) + 1;
     }
+    return acc;
+  }, {}) || {};
 
-    setLoading(true);
-    setMessage({ type: '', text: '' });
-
-    const finalData = { ...formData, content };
-
-    try {
-      await axiosSecure.put(`/api/posts/${id}`, finalData); // PUT রিকোয়েস্ট আপডেটের জন্য
-      setMessage({ type: 'success', text: 'Post updated successfully!' });
-      
-      setTimeout(() => navigate('/admin/dashboard'), 2000);
-    } catch (error) {
-      setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to update post.' });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      ['link', 'clean']
-    ],
-  };
-
-  if (fetching) {
-    return (
-      <div className="flex justify-center items-center py-20">
-        <div className="h-12 w-12 animate-spin rounded-full border-b-4 border-t-4 border-indigo-600"></div>
-      </div>
-    );
-  }
+  // 🚀 যেই ক্যাটাগরিতে কমপক্ষে ১টি পোস্ট আছে, শুধু সেগুলো ফিল্টার করা হচ্ছে
+  const visibleCategories = categories.filter(cat => categoryCounts[cat.slug] > 0);
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-      <div className="mb-8 border-b border-gray-100 pb-4">
-        <h2 className="text-2xl font-extrabold text-gray-900">Edit Post</h2>
+    <div className="space-y-6 sticky top-24">
+      {/* 300x250 Adsterra Ad Placeholder */}
+      <div className="w-full bg-gray-50 border border-gray-100 flex items-center justify-center rounded-2xl transition-colors duration-300">
+        <AdBanner width={300} height={250} dataKey="6878e4f6deff8322987aee6bf34bb3a6" />
       </div>
 
-      {message.text && (
-        <div className={`p-4 mb-6 rounded-xl font-medium ${message.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
-          {message.text}
-        </div>
-      )}
+      {/* Dynamic Categories Widget */}
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 transition-colors duration-300">
+        <h3 className="text-lg font-extrabold text-gray-900 mb-4 border-b border-gray-100 pb-3">
+          Categories
+        </h3>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
-            <label className="block text-sm font-bold text-gray-700 mb-2">Post Title</label>
-            <input type="text" name="title" required value={formData.title} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none bg-gray-50 focus:bg-white" />
+        {isLoading || isCategoryLoading ? (
+          <div className="flex justify-center py-4">
+            <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-t-2 border-indigo-600"></div>
           </div>
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-2">Category</label>
-            <select name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none">
-              <option value="Govt Jobs">Govt Jobs</option>
-              <option value="IT-Private Jobs">IT/Private Jobs</option>
-              <option value="Tech Notes">Tech Notes</option>
-              <option value="Study Material">Study Material</option>
-            </select>
-          </div>
-        </div>
+        ) : visibleCategories.length === 0 ? (
+          <p className="text-sm text-gray-500 text-center py-2">No categories found.</p>
+        ) : (
+          <ul className="space-y-3 text-gray-600 font-medium">
+            {/* 🚀 categories.map এর বদলে visibleCategories.map ব্যবহার করা হচ্ছে */}
+            {visibleCategories.map((cat) => {
+              const count = categoryCounts[cat.slug]; 
 
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-2">Short Snippet</label>
-          <textarea name="snippet" required rows="2" value={formData.snippet} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none bg-gray-50 focus:bg-white"></textarea>
-        </div>
-
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-2">Full Content</label>
-          <div className="bg-white rounded-xl overflow-hidden border border-gray-200 focus-within:border-indigo-500">
-            <ReactQuill theme="snow" value={content} onChange={setContent} modules={modules} className="h-64" />
-          </div>
-        </div>
-
-        <div className="pt-8 mt-12 border-t border-gray-100">
-          <h3 className="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
-            🚀 SEO & Meta Data 
-          </h3>
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Meta Title</label>
-              <input type="text" name="metaTitle" value={formData.metaTitle} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none bg-gray-50 focus:bg-white" />
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Meta Description</label>
-              <textarea name="metaDescription" rows="2" value={formData.metaDescription} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none bg-gray-50 focus:bg-white"></textarea>
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Keywords</label>
-              <input type="text" name="keywords" value={formData.keywords} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none bg-gray-50 focus:bg-white" />
-            </div>
-          </div>
-        </div>
-
-        <button type="submit" disabled={loading} className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-bold py-3.5 px-8 rounded-xl transition-all mt-6">
-          {loading ? 'Updating...' : 'Update Post'}
-        </button>
-      </form>
+              return (
+                <li key={cat._id}>
+                  <Link
+                    to={`/category/${cat.slug}`}
+                    className="hover:text-indigo-600 flex justify-between items-center transition-all group"
+                  >
+                    <span className="transform group-hover:translate-x-1 transition-transform duration-200">
+                      {cat.name}
+                    </span>
+                    <span className="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full text-xs font-bold">
+                      {count}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };
 
-export default EditPost;
+export default Sidebar;
