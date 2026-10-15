@@ -13,7 +13,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const [posts, isLoading, refetch] = usePosts();
-  
+
   // 🚀 Category fetch korar jonno notun state
   const [categories, setCategories] = useState([]);
 
@@ -68,7 +68,7 @@ const Dashboard = () => {
   // 🚀 Table-e category er nam onujayi alada rong deyar function
   const getCategoryColor = (categoryName) => {
     if (!categoryName) return 'bg-gray-100 text-gray-700';
-    
+
     const colors = [
       'bg-blue-100 text-blue-700',
       'bg-green-100 text-green-700',
@@ -111,10 +111,10 @@ const Dashboard = () => {
 
       {/* Dynamic Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-linear-to-br from-indigo-500 to-purple-600 p-6 rounded-2xl text-white shadow-lg">
+        <Link to="/admin/posts" className="bg-linear-to-br from-indigo-500 to-purple-600 p-6 rounded-2xl text-white shadow-lg">
           <h3 className="text-lg font-semibold opacity-90">Total Posts</h3>
           <p className="text-4xl font-extrabold mt-2">{posts.length}</p>
-        </div>
+        </Link>
 
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
           <div>
@@ -185,14 +185,14 @@ const Dashboard = () => {
                 {posts.map((post) => (
                   <tr key={post._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                     <td className="p-4 font-bold text-indigo-900">{post.title}</td>
-                    
+
                     {/* 🚀 Dynamic Colored Category Badge */}
                     <td className="p-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${getCategoryColor(post.category)}`}>
                         {post.category}
                       </span>
                     </td>
-                    
+
                     <td className="p-4 text-center font-bold text-indigo-600 bg-indigo-50/50">
                       {post.views || 0}
                     </td>
