@@ -25,9 +25,9 @@ const Home = () => {
             <Link to={"/category/tech-notes"} className="bg-white text-indigo-700 px-6 py-3 rounded-lg font-bold shadow-md hover:bg-gray-50 transition-all hover:scale-105 active:scale-95">
               Start Reading Today
             </Link>
-            <button className="bg-indigo-800/50 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-indigo-800 transition-all border border-indigo-400 backdrop-blur-sm">
+            <Link to="#jobs" className="bg-indigo-800/50 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-indigo-800 transition-all border border-indigo-400 backdrop-blur-sm">
               View Job Circulars
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@ const Home = () => {
       </div>
 
       {/* Dynamic Data Mapping */}
-      <div className="flex flex-col gap-6">
+      <div id='jobs' className="flex flex-col gap-6">
         {isLoading ? (
           <div className="text-center py-10 text-gray-500 font-medium animate-pulse">Loading amazing content...</div>
         ) : posts.length === 0 ? (
