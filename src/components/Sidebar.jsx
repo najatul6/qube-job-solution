@@ -1,22 +1,39 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import usePosts from '../hooks/usePosts'; // 🚀 আমাদের বানানো হুক ইমপোর্ট
+import usePosts from '../hooks/usePosts'; 
 import AdBanner from './AdBanner';
+import useAxiosPublic from '../hooks/useAxiosPublic';
 
 const Sidebar = () => {
-  // 🚀 মাত্র এক লাইনে সব ডেটা এবং লোডিং স্টেট পেয়ে যাচ্ছি
   const [posts, isLoading] = usePosts();
+  const axiosPublic = useAxiosPublic(); 
+  
+  const [categories, setCategories] = useState([]);
+  const [isCategoryLoading, setIsCategoryLoading] = useState(true);
 
-  // কোন ক্যাটাগরিতে কয়টা পোস্ট আছে তা কাউন্ট করা হচ্ছে
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axiosPublic.get('/api/categories');
+        if (Array.isArray(data)) {
+          setCategories(data);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setIsCategoryLoading(false);
+      }
+    };
+    fetchCategories();
+  }, [axiosPublic]); 
+
   const categoryCounts = posts?.reduce((acc, post) => {
-    const cat = post.category;
-    if (cat) {
-      acc[cat] = (acc[cat] || 0) + 1;
+    const catSlug = post.category;
+    if (catSlug) {
+      acc[catSlug] = (acc[catSlug] || 0) + 1;
     }
     return acc;
   }, {}) || {};
-
-  // ক্যাটাগরির নামকে URL স্লাগে কনভার্ট করার ফাংশন
-  const createSlug = (name) => name.toLowerCase().replace(/ /g, '-');
 
   return (
     <div className="space-y-6 sticky top-24">
@@ -31,29 +48,33 @@ const Sidebar = () => {
           Categories
         </h3>
 
-        {isLoading ? (
+        {isLoading || isCategoryLoading ? (
           <div className="flex justify-center py-4">
             <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-t-2 border-indigo-600"></div>
           </div>
-        ) : Object.keys(categoryCounts).length === 0 ? (
+        ) : categories.length === 0 ? (
           <p className="text-sm text-gray-500 text-center py-2">No categories found.</p>
         ) : (
           <ul className="space-y-3 text-gray-600 font-medium">
-            {Object.entries(categoryCounts).map(([category, count]) => (
-              <li key={category}>
-                <Link
-                  to={`/category/${createSlug(category)}`}
-                  className="hover:text-indigo-600 flex justify-between items-center transition-all group"
-                >
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">
-                    {category}
-                  </span>
-                  <span className="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full text-xs font-bold">
-                    {count}
-                  </span>
-                </Link>
-              </li>
-            ))}
+            {categories.map((cat) => {
+              const count = categoryCounts[cat.slug] || 0; 
+
+              return (
+                <li key={cat._id}>
+                  <Link
+                    to={`/category/${cat.slug}`}
+                    className="hover:text-indigo-600 flex justify-between items-center transition-all group"
+                  >
+                    <span className="transform group-hover:translate-x-1 transition-transform duration-200">
+                      {cat.name}
+                    </span>
+                    <span className="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full text-xs font-bold">
+                      {count}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
