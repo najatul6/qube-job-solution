@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AdminLayout from '../components/AdminLayout';
 import PrivateRoute from './PrivateRoute';
 import Layout from '../components/Layout';
+import ErrorPage from '../pages/ErrorPage';
 
 // 🚀 Lazy Loading Imports (শুধু দরকারী পেজ লোড হবে)
 const Home = React.lazy(() => import('../pages/Home'));
@@ -68,6 +69,7 @@ const AppRouter = () => {
             path="/admin/edit-post/:id"
             element={<PrivateRoute><AdminLayout><EditPost /></AdminLayout></PrivateRoute>}
           />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
