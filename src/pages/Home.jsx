@@ -31,9 +31,9 @@ const Home = () => {
             <Link to={"/category/tech-notes"} className="bg-white text-indigo-700 px-6 py-3 rounded-lg font-bold shadow-md hover:bg-gray-50 transition-all hover:scale-105 active:scale-95">
               Start Reading Today
             </Link>
-            <Link to="#jobs" className="bg-indigo-800/50 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-indigo-800 transition-all border border-indigo-400 backdrop-blur-sm">
+            <button onClick={handleScrollToJobs} className="bg-indigo-800/50 text-white px-6 py-3 rounded-lg font-bold shadow-md hover:bg-indigo-800 transition-all border border-indigo-400 backdrop-blur-sm">
               View Job Circulars
-            </Link>
+            </button>
           </div>
         </div>
       </div>
