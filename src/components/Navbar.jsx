@@ -1,41 +1,33 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import useAxiosPublic from '../../hooks/useAxiosPublic'; // 🚀 কাস্টম হুক ইমপোর্ট
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const axiosPublic = useAxiosPublic(); // 🚀 হুক ইনিশিয়ালাইজ করা হলো
+  
+  const [categories, setCategories] = useState([]);
 
-  // 🚀 Dark Mode State (Local Storage থেকে চেক করবে আগে কী সেভ করা ছিল)
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem('theme') === 'dark' || false
-  );
-
-  // 🚀 ডার্ক মোড টগল হলে HTML ট্যাগে 'dark' ক্লাস অ্যাড/রিমুভ করবে
+  // 🚀 ডাটাবেজ থেকে ক্যাটাগরি ফেচ করা (পাবলিক API দিয়ে)
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axiosPublic.get('/api/categories');
+        if (Array.isArray(data)) {
+          setCategories(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch categories for navbar:", error);
+      }
+    };
+    fetchCategories();
+  }, [axiosPublic]);
 
-  const menuItems = [
-    { title: 'Home', path: '/' },
-    { title: 'Govt Jobs', path: '/category/govt-jobs' },
-    { title: 'IT/Private Jobs', path: '/category/it-private-jobs' },
-    { title: 'Tech Notes', path: '/category/tech-notes' },
-    { title: 'Study Material', path: '/category/study-material' },
-    { title: 'Contact', path: '/contact' }
-  ];
-
-  // রাউট চেঞ্জ হলে (অন্য পেজে গেলে) সাইডবার অটোমেটিক বন্ধ হয়ে যাবে
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
 
-  // সাইডবার ওপেন থাকলে পেজের ব্যাকগ্রাউন্ড স্ক্রোল হওয়া বন্ধ করবে (Professional UX)
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -54,19 +46,41 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex gap-6 font-medium text-gray-600 items-center">
-            {menuItems.map((item, index) => (
-              <Link key={index} to={item.path} className="hover:text-indigo-600 transition-colors">
-                {item.title}
-              </Link>
-            ))}
-            {/* <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors border dark:border-gray-700"
-              title="Toggle Dark Mode"
-            >
-              {isDarkMode ? '☀️' : '🌙'}
-            </button> */}
+          <div className="hidden md:flex gap-8 font-medium text-gray-600 items-center">
+            <Link to="/" className="hover:text-indigo-600 transition-colors">
+              Home
+            </Link>
+            
+            {/* Dynamic Categories Dropdown */}
+            <div className="relative group">
+              <button className="flex items-center gap-1 hover:text-indigo-600 transition-colors focus:outline-none pb-1">
+                Categories
+                <svg className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {/* Dropdown Box */}
+              <div className="absolute top-full left-0 mt-1 w-56 bg-white border border-gray-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 py-3 z-50">
+                {categories.length === 0 ? (
+                  <p className="px-4 py-2 text-sm text-gray-500">Loading...</p>
+                ) : (
+                  categories.map((cat) => (
+                    <Link 
+                      key={cat._id} 
+                      to={`/category/${cat.slug}`} 
+                      className="block px-5 py-2.5 text-sm hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <Link to="/contact" className="hover:text-indigo-600 transition-colors">
+              Contact
+            </Link>
           </div>
 
           {/* Mobile Menu Button (Hamburger) */}
@@ -84,20 +98,16 @@ const Navbar = () => {
       </nav>
 
       {/* =========================================
-          🚀 Animated Mobile Sidebar (Off-canvas)
+          Animated Mobile Sidebar (Off-canvas)
           ========================================= */}
 
-      {/* 1. Dark Overlay (পেছনের কালো শ্যাডো) */}
       <div
-        className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 md:hidden ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-          }`}
-        onClick={() => setIsOpen(false)} // বাইরে ক্লিক করলে বন্ধ হবে
+        className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 md:hidden ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+        onClick={() => setIsOpen(false)}
       ></div>
 
-      {/* 2. Sliding Sidebar (বাম থেকে ডানে আসবে) */}
       <div
-        className={`fixed top-0 left-0 w-64 h-full bg-white z-[60] shadow-2xl transform transition-transform duration-300 ease-in-out md:hidden flex flex-col ${isOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
+        className={`fixed top-0 left-0 w-64 h-full bg-white z-[60] shadow-2xl transform transition-transform duration-300 ease-in-out md:hidden flex flex-col ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between p-5 border-b">
@@ -115,24 +125,39 @@ const Navbar = () => {
         </div>
 
         {/* Sidebar Links */}
-        <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-          {menuItems.map((item, index) => (
-            <Link
-              key={index}
-              to={item.path}
-              className="block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
-            >
-              {item.title}
-            </Link>
-          ))}
-        </div>
+        <div className="flex-1 overflow-y-auto py-4 px-3 space-y-2">
+          <Link
+            to="/"
+            className="block px-4 py-3 rounded-xl text-base font-bold text-gray-800 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+          >
+            Home
+          </Link>
+          
+          {/* Mobile Categories Section */}
+          <div className="pt-3 pb-1">
+            <p className="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+              All Categories
+            </p>
+            <div className="space-y-1 pl-3 border-l-2 border-indigo-100 ml-4">
+              {categories.map((cat) => (
+                <Link
+                  key={cat._id}
+                  to={`/category/${cat.slug}`}
+                  className="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                >
+                  {cat.name}
+                </Link>
+              ))}
+            </div>
+          </div>
 
-        {/* Sidebar Footer / Action Area */}
-        {/* <div className="p-5 border-t bg-gray-50 mt-auto">
-          <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white rounded-xl text-base font-medium text-gray-700 hover:text-indigo-600 hover:shadow-sm transition-all border border-gray-200">
-            🌙 Switch to Dark Mode
-          </button>
-        </div> */}
+          <Link
+            to="/contact"
+            className="block px-4 py-3 rounded-xl text-base font-bold text-gray-800 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+          >
+            Contact
+          </Link>
+        </div>
       </div>
     </>
   );
