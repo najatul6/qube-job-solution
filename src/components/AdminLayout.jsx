@@ -33,7 +33,7 @@ const AdminLayout = ({ children }) => {
           <NavLink to="/admin/create-post" className={navClass}>
             ✍️ Create Post
           </NavLink>
-          <NavLink to="/admin/post" className={navClass}>
+          <NavLink to="/admin/posts" className={navClass}>
             🚨 Post Manager
           </NavLink>
           <NavLink
