@@ -51,6 +51,10 @@ const AppRouter = () => {
             element={<PrivateRoute><AdminLayout><Dashboard /></AdminLayout></PrivateRoute>}
           />
           <Route
+            path="/admin/categories"
+            element={<PrivateRoute><AdminLayout><CategoryManager /></AdminLayout></PrivateRoute>}
+          />
+          <Route
             path="/admin/create-post"
             element={<PrivateRoute><AdminLayout><CreatePost /></AdminLayout></PrivateRoute>}
           />
