@@ -78,6 +78,12 @@ const Navbar = () => {
               </div>
             </div>
 
+            <Link to="/about" className="hover:text-indigo-600 transition-colors">
+              About Us
+            </Link>
+            <Link to="/privacy-policy" className="hover:text-indigo-600 transition-colors">
+              Privacy Policy
+            </Link>
             <Link to="/contact" className="hover:text-indigo-600 transition-colors">
               Contact
             </Link>
