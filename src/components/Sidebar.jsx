@@ -58,7 +58,6 @@ const Sidebar = () => {
           <p className="text-sm text-gray-500 text-center py-2">No categories found.</p>
         ) : (
           <ul className="space-y-3 text-gray-600 font-medium">
-            {/* 🚀 categories.map এর বদলে visibleCategories.map ব্যবহার করা হচ্ছে */}
             {visibleCategories.map((cat) => {
               const count = categoryCounts[cat.slug]; 
 
