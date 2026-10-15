@@ -4,9 +4,15 @@ import PostCard from '../components/PostCard';
 import usePosts from '../hooks/usePosts'; // 🚀 Advanced hook import
 
 const Home = () => {
-  // Just ek line e shob data, loading state chole aslo!
   const [posts, isLoading] = usePosts();
 
+  const handleScrollToJobs = (e) => {
+    e.preventDefault();
+    const jobsSection = document.getElementById('jobs');
+    if (jobsSection) {
+      jobsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   return (
     <div className="w-full">
       {/* 🚀 Vibrant Hero Section */}
