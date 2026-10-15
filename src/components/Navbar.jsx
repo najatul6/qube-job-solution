@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import useAxiosPublic from '../../hooks/useAxiosPublic'; // 🚀 কাস্টম হুক ইমপোর্ট
+import useAxiosPublic from '../hooks/useAxiosPublic';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
