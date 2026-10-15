@@ -35,6 +35,8 @@ const Sidebar = () => {
     return acc;
   }, {}) || {};
 
+  const visibleCategories = categories.filter(cat => categoryCounts[cat.slug] > 0);
+
   return (
     <div className="space-y-6 sticky top-24">
       {/* 300x250 Adsterra Ad Placeholder */}
@@ -52,12 +54,13 @@ const Sidebar = () => {
           <div className="flex justify-center py-4">
             <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-t-2 border-indigo-600"></div>
           </div>
-        ) : categories.length === 0 ? (
+        ) : visibleCategories.length === 0 ? (
           <p className="text-sm text-gray-500 text-center py-2">No categories found.</p>
         ) : (
           <ul className="space-y-3 text-gray-600 font-medium">
-            {categories.map((cat) => {
-              const count = categoryCounts[cat.slug] || 0; 
+            {/* 🚀 categories.map এর বদলে visibleCategories.map ব্যবহার করা হচ্ছে */}
+            {visibleCategories.map((cat) => {
+              const count = categoryCounts[cat.slug]; 
 
               return (
                 <li key={cat._id}>
