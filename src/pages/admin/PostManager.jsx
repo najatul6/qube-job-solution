@@ -1,10 +1,17 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import usePosts from "../../hooks/usePosts";
 
 const PostManager = () => {
     const axiosSecure = useAxiosSecure();
     const [posts, isLoading, refetch] = usePosts();
+    
+    // 🚀 Search এবং Sort এর জন্য নতুন স্টেট
+    const [searchQuery, setSearchQuery] = useState("");
+    const [sortOption, setSortOption] = useState("date-desc");
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -34,19 +41,65 @@ const PostManager = () => {
         });
     };
 
+    // 🚀 ফিল্টারিং এবং সর্টিং লজিক
+    const processedPosts = posts
+        ?.filter((post) => {
+            const searchLower = searchQuery.toLowerCase();
+            return (
+                post.title?.toLowerCase().includes(searchLower) ||
+                post.category?.toLowerCase().includes(searchLower)
+            );
+        })
+        .sort((a, b) => {
+            if (sortOption === "date-desc") return new Date(b.createdAt) - new Date(a.createdAt);
+            if (sortOption === "date-asc") return new Date(a.createdAt) - new Date(b.createdAt);
+            if (sortOption === "views-desc") return (b.views || 0) - (a.views || 0);
+            if (sortOption === "title-asc") return a.title?.localeCompare(b.title);
+            return 0;
+        }) || [];
+
     if (isLoading) return <div className="p-10 text-center text-gray-500 font-bold">Loading Dashboard Data...</div>;
+
     return (
         <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100">
-            <div className="flex flex-wrap justify-between items-center mb-6 gap-4 border-b border-gray-100 pb-4">
-                <h2 className="text-xl font-bold text-gray-800">Manage Content</h2>
-                <Link to="/admin/create-post" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-md active:scale-95">
-                    + Create New Post
-                </Link>
+            {/* 🚀 Header, Search & Sort Controls */}
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4 border-b border-gray-100 pb-4">
+                <h2 className="text-xl font-bold text-gray-800 whitespace-nowrap">Manage Content</h2>
+                
+                <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
+                    {/* Search Bar */}
+                    <div className="relative w-full sm:w-auto flex-1">
+                        <svg className="w-4 h-4 absolute left-3 top-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <input
+                            type="text"
+                            placeholder="Search by title or category..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:border-indigo-500 bg-gray-50 focus:bg-white transition-colors text-sm"
+                        />
+                    </div>
+
+                    {/* Sort Dropdown */}
+                    <select
+                        value={sortOption}
+                        onChange={(e) => setSortOption(e.target.value)}
+                        className="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:border-indigo-500 bg-gray-50 hover:bg-gray-100 cursor-pointer text-sm font-medium text-gray-700"
+                    >
+                        <option value="date-desc">Newest First</option>
+                        <option value="date-asc">Oldest First</option>
+                        <option value="views-desc">Most Views</option>
+                        <option value="title-asc">Title (A-Z)</option>
+                    </select>
+
+                    <Link to="/admin/create-post" className="w-full sm:w-auto text-center bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-md active:scale-95 whitespace-nowrap">
+                        + Create New Post
+                    </Link>
+                </div>
             </div>
 
-            {posts.length === 0 ? (
-                <div className="text-center py-12 text-gray-500 font-medium">
-                    No posts managed yet. Click "Create New Post" to add one.
+            {processedPosts.length === 0 ? (
+                <div className="text-center py-12 text-gray-500 font-medium bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                    {searchQuery ? "No posts match your search criteria." : "No posts managed yet. Click 'Create New Post' to add one."}
                 </div>
             ) : (
                 <div className="overflow-x-auto">
@@ -61,15 +114,15 @@ const PostManager = () => {
                             </tr>
                         </thead>
                         <tbody className="text-gray-700 text-sm">
-                            {posts.map((post) => (
+                            {/* 🚀 Render Processed Posts */}
+                            {processedPosts.map((post) => (
                                 <tr key={post._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                                     <td className="p-4 font-bold text-indigo-900">{post.title}</td>
-                                    <td className="p-4"><span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-bold">{post.category}</span></td>
-                                    {/* 🚀 Show Post Views */}
+                                    <td className="p-4"><span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">{post.category}</span></td>
                                     <td className="p-4 text-center font-bold text-indigo-600 bg-indigo-50/50">
                                         {post.views || 0}
                                     </td>
-                                    <td className="p-4">{new Date(post.createdAt).toLocaleDateString()}</td>
+                                    <td className="p-4 whitespace-nowrap">{new Date(post.createdAt).toLocaleDateString()}</td>
                                     <td className="p-4 text-right flex justify-end gap-3">
                                         <Link
                                             to={`/admin/edit-post/${post._id}`}
@@ -93,7 +146,7 @@ const PostManager = () => {
                 </div>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default PostManager
+export default PostManager;
