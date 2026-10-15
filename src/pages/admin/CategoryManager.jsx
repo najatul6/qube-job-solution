@@ -1,92 +1,132 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios'; // Base URL কনফিগার করা থাকলে শুধু '/api/categories' কল করবেন
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const CategoryManager = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
+  
+  const axiosSecure = useAxiosSecure();
 
-  // সব ক্যাটাগরি ফেচ করা
+  // Category fetch kora
   const fetchCategories = async () => {
     try {
-      const { data } = await axios.get('/api/categories');
-      setCategories(data);
+      const { data } = await axiosSecure.get('/api/categories');
+      if (Array.isArray(data)) {
+        setCategories(data);
+      }
     } catch (error) {
-      console.error('Error fetching categories', error);
+      console.error('Error fetching categories:', error);
     }
   };
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [axiosSecure]);
 
-  // নতুন ক্যাটাগরি তৈরি করা
+  // Notun category add kora
   const handleCreate = async (e) => {
     e.preventDefault();
+    if (!name.trim()) return;
+    
     setLoading(true);
+    setMessage({ type: '', text: '' });
+
     try {
-      await axios.post('/api/categories', { name });
-      setName(''); // ইনপুট ক্লিয়ার
-      fetchCategories(); // লিস্ট আপডেট
-      alert('Category added successfully!');
+      await axiosSecure.post('/api/categories', { name });
+      setName('');
+      fetchCategories(); 
+      setMessage({ type: 'success', text: 'Category added successfully!' });
+      
+      // 3 second por success message hide kora
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } catch (error) {
-      alert(error.response?.data?.error || 'Something went wrong');
+      setMessage({ type: 'error', text: error.response?.data?.error || 'Failed to add category' });
     } finally {
       setLoading(false);
     }
   };
 
-  // ক্যাটাগরি ডিলিট করা
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this category?')) {
+  // Category delete kora
+  const handleDelete = async (id, categoryName) => {
+    if (window.confirm(`Are you sure you want to delete "${categoryName}"?`)) {
       try {
-        await axios.delete(`/api/categories/${id}`);
-        fetchCategories();
+        await axiosSecure.delete(`/api/categories/${id}`);
+        fetchCategories(); // Delete er por list update kora
       } catch (error) {
-        console.error('Error deleting category', error);
+        alert('Error deleting category');
+        console.error(error);
       }
     }
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
-      <h2 className="text-2xl font-bold mb-6">Manage Categories</h2>
+    <div className="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+      <div className="mb-8 border-b border-gray-100 pb-4">
+        <h2 className="text-2xl font-extrabold text-gray-900">Manage Categories</h2>
+      </div>
 
-      {/* Add Category Form */}
-      <form onSubmit={handleCreate} className="flex gap-4 mb-8">
+      {message.text && (
+        <div className={`p-4 mb-6 rounded-xl font-medium ${message.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+          {message.text}
+        </div>
+      )}
+
+      {/* 🚀 Add Category Form */}
+      <form onSubmit={handleCreate} className="flex gap-4 mb-10">
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Enter category name (e.g., Govt Jobs)"
-          className="flex-1 p-2 border rounded focus:outline-none focus:border-indigo-500"
+          placeholder="Enter category name (e.g., Tech Notes)"
+          className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none bg-gray-50 focus:bg-white"
           required
         />
         <button
           type="submit"
           disabled={loading}
-          className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 disabled:opacity-50"
+          className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-bold py-3 px-8 rounded-xl transition-all whitespace-nowrap"
         >
-          {loading ? 'Adding...' : 'Add Category'}
+          {loading ? 'Adding...' : '+ Add Category'}
         </button>
       </form>
 
-      {/* Categories List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {categories.map((cat) => (
-          <div key={cat._id} className="flex justify-between items-center p-4 border rounded bg-gray-50">
-            <div>
-              <p className="font-semibold">{cat.name}</p>
-              <p className="text-xs text-gray-500">/{cat.slug}</p>
-            </div>
-            <button
-              onClick={() => handleDelete(cat._id)}
-              className="text-red-500 hover:text-red-700 font-bold"
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+      {/* 🚀 Categories List */}
+      <div className="bg-white rounded-xl overflow-hidden border border-gray-200">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-gray-50 border-b border-gray-200">
+              <th className="py-4 px-6 font-bold text-gray-700">Category Name</th>
+              <th className="py-4 px-6 font-bold text-gray-700">URL Slug</th>
+              <th className="py-4 px-6 font-bold text-gray-700 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.length === 0 ? (
+              <tr>
+                <td colSpan="3" className="py-8 text-center text-gray-500 font-medium">
+                  No categories found. Add your first category above!
+                </td>
+              </tr>
+            ) : (
+              categories.map((cat) => (
+                <tr key={cat._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                  <td className="py-4 px-6 font-semibold text-gray-900">{cat.name}</td>
+                  <td className="py-4 px-6 text-gray-500 font-mono text-sm">/{cat.slug}</td>
+                  <td className="py-4 px-6 text-right">
+                    <button
+                      onClick={() => handleDelete(cat._id, cat.name)}
+                      className="text-red-500 hover:text-white hover:bg-red-500 font-bold px-4 py-2 rounded-lg transition-colors border border-red-100 hover:border-red-500"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
