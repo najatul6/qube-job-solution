@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import usePost from '../hooks/usePost';
+import AdBanner from '../components/AdBanner';
 
 const BlogPost = () => {
   const { id } = useParams();
