@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -12,6 +13,23 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const [posts, isLoading, refetch] = usePosts();
+  
+  // 🚀 Category fetch korar jonno notun state
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axiosSecure.get('/api/categories');
+        if (Array.isArray(data)) {
+          setCategories(data);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+  }, [axiosSecure]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -19,7 +37,6 @@ const Dashboard = () => {
     navigate('/login');
   };
 
-  // 🚀 SweetAlert 
   const handleDelete = (id) => {
     Swal.fire({
       title: 'Are you sure?',
@@ -48,11 +65,34 @@ const Dashboard = () => {
     });
   };
 
+  // 🚀 Table-e category er nam onujayi alada rong deyar function
+  const getCategoryColor = (categoryName) => {
+    if (!categoryName) return 'bg-gray-100 text-gray-700';
+    
+    const colors = [
+      'bg-blue-100 text-blue-700',
+      'bg-green-100 text-green-700',
+      'bg-purple-100 text-purple-700',
+      'bg-pink-100 text-pink-700',
+      'bg-orange-100 text-orange-700',
+      'bg-teal-100 text-teal-700',
+    ];
+    // Nam theke ekta fixed index ber kora jate same category sob somoy same rong pay
+    const index = (categoryName.length + categoryName.charCodeAt(0)) % colors.length;
+    return colors[index];
+  };
+
   if (isLoading) return <div className="p-10 text-center text-gray-500 font-bold">Loading Dashboard Data...</div>;
 
-  const uniqueCategories = [...new Set(posts.map(post => post.category))].length;
+  // 🚀 Active/Inactive Category Calculation
+  const activeCategories = new Set(posts.map(post => post.category));
+  const activeCount = activeCategories.size;
+  const totalCategoryCount = categories.length;
+  // Jodi post e emon kono category thake ja ekhono api theke aseni, tar jonno Math.max use kora holo
+  const inactiveCount = Math.max(0, totalCategoryCount - activeCount);
 
   const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0);
+
   return (
     <div className="w-full">
       {/* Top Bar */}
@@ -76,7 +116,6 @@ const Dashboard = () => {
           <p className="text-4xl font-extrabold mt-2">{posts.length}</p>
         </div>
 
-        {/* 🚀 Total Views Card */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
           <div>
             <h3 className="text-lg font-semibold text-gray-500">Total Views</h3>
@@ -84,14 +123,22 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
-          <div>
+        {/* 🚀 Updated Categories Card (Active & Inactive) */}
+        <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+          <div className="flex justify-between items-center mb-2">
             <h3 className="text-lg font-semibold text-gray-500">Categories</h3>
-            <p className="text-4xl font-extrabold text-gray-900 mt-2">{uniqueCategories}</p>
+            <p className="text-2xl font-extrabold text-gray-900">{totalCategoryCount > 0 ? totalCategoryCount : activeCount}</p>
+          </div>
+          <div className="flex gap-2 text-xs font-bold">
+            <span className="bg-green-50 text-green-600 px-2 py-1 rounded-md border border-green-100">
+              Active: {activeCount}
+            </span>
+            <span className="bg-red-50 text-red-500 px-2 py-1 rounded-md border border-red-100">
+              Inactive: {inactiveCount}
+            </span>
           </div>
         </div>
 
-        {/* 🚀 Adsterra Earnings Card */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-lg font-semibold text-gray-500">Ad Earnings</h3>
@@ -138,8 +185,14 @@ const Dashboard = () => {
                 {posts.map((post) => (
                   <tr key={post._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                     <td className="p-4 font-bold text-indigo-900">{post.title}</td>
-                    <td className="p-4"><span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-bold">{post.category}</span></td>
-                    {/* 🚀 Show Post Views */}
+                    
+                    {/* 🚀 Dynamic Colored Category Badge */}
+                    <td className="p-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${getCategoryColor(post.category)}`}>
+                        {post.category}
+                      </span>
+                    </td>
+                    
                     <td className="p-4 text-center font-bold text-indigo-600 bg-indigo-50/50">
                       {post.views || 0}
                     </td>
