@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import ReactQuill from 'react-quill-new';
@@ -7,16 +7,21 @@ import 'react-quill-new/dist/quill.snow.css';
 const CreatePost = () => {
   const [formData, setFormData] = useState({
     title: '',
-    category: 'Govt Jobs',
+    category: '', 
     snippet: '',
     metaTitle: '',
     metaDescription: '',
     keywords: ''
   });
   
+  const [categories, setCategories] = useState([]);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+
+  const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [categoryLoading, setCategoryLoading] = useState(false);
 
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
@@ -25,9 +30,40 @@ const CreatePost = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // 🚀 ক্যাটাগরি ড্রপডাউন চেঞ্জ হ্যান্ডলার
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    if (value === 'add_new_category') {
+      setIsAddingNewCategory(true);
+      setFormData({ ...formData, category: '' }); // ড্রপডাউন ভ্যালু রিসেট করা
+    } else {
+      setFormData({ ...formData, category: value });
+    }
+  };
+
+  const handleAddNewCategory = async () => {
+    if (!newCategoryName.trim()) return;
+    setCategoryLoading(true);
+    
+    try {
+      const { data } = await axiosSecure.post('/api/categories', { name: newCategoryName });
+      
+      setCategories([data.category, ...categories]); 
+      setFormData({ ...formData, category: data.category.slug });
+      
+      setNewCategoryName('');
+      setIsAddingNewCategory(false);
+    } catch (error) {
+      console.error("Error adding category:", error);
+      alert(error.response?.data?.error || "Failed to add category");
+    } finally {
+      setCategoryLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!content || content === '<p><br></p>') {
       return setMessage({ type: 'error', text: 'Post content cannot be empty!' });
     }
@@ -40,9 +76,9 @@ const CreatePost = () => {
     try {
       await axiosSecure.post('/api/posts', finalData);
       setMessage({ type: 'success', text: 'Post created successfully!' });
-      
+
       setFormData({
-        title: '', category: 'Govt Jobs', snippet: '',
+        title: '', category: '', snippet: '',
         metaTitle: '', metaDescription: '', keywords: ''
       });
       setContent('');
@@ -64,6 +100,23 @@ const CreatePost = () => {
     ],
   };
 
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const { data } = await axiosSecure.get('/api/categories');
+        if (Array.isArray(data)) {
+          setCategories(data);
+        } else {
+          setCategories([]);
+        }
+      } catch (error) {
+        console.error("Category fetch error:", error);
+        setCategories([]);
+      }
+    };
+    getCategories();
+  }, [axiosSecure]);
+
   return (
     <div className="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
       <div className="mb-8 border-b border-gray-100 pb-4">
@@ -82,14 +135,59 @@ const CreatePost = () => {
             <label className="block text-sm font-bold text-gray-700 mb-2">Post Title</label>
             <input type="text" name="title" required value={formData.title} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none bg-gray-50 focus:bg-white" />
           </div>
+          
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-2">Category</label>
-            <select name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none">
-              <option value="Govt Jobs">Govt Jobs</option>
-              <option value="IT-Private Jobs">IT/Private Jobs</option>
-              <option value="Tech Notes">Tech Notes</option>
-              <option value="Study Material">Study Material</option>
-            </select>
+            <label className="block text-gray-700 font-bold mb-2 text-sm">Category</label>
+            
+            {!isAddingNewCategory ? (
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleCategoryChange} // 🚀 নতুন হ্যান্ডলার যুক্ত করা হয়েছে
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none bg-gray-50 focus:bg-white cursor-pointer"
+                required
+              >
+                <option value="" disabled>Select a category</option>
+                {Array.isArray(categories) && categories.map((cat) => (
+                  <option key={cat._id} value={cat.slug}>
+                    {cat.name}
+                  </option>
+                ))}
+                {/* 🚀 লিস্টের নিচে Add New অপশন */}
+                <option value="add_new_category" className="font-bold text-indigo-600 bg-indigo-50">
+                  + Add New Category...
+                </option>
+              </select>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="e.g. Govt Jobs"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-indigo-300 focus:border-indigo-500 outline-none bg-white"
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  onClick={handleAddNewCategory}
+                  disabled={categoryLoading}
+                  className="whitespace-nowrap px-4 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 disabled:opacity-50"
+                >
+                  {categoryLoading ? '...' : 'Save'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAddingNewCategory(false);
+                    setNewCategoryName('');
+                  }}
+                  className="whitespace-nowrap px-4 py-3 bg-gray-100 text-gray-600 font-bold rounded-xl hover:bg-gray-200"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -107,7 +205,7 @@ const CreatePost = () => {
 
         <div className="pt-8 mt-12 border-t border-gray-100">
           <h3 className="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
-            🚀 SEO & Meta Data 
+            🚀 SEO & Meta Data
           </h3>
           <div className="space-y-6">
             <div>
