@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import AdBanner from '../components/AdBanner';
 import PostCard from '../components/PostCard';
-import usePosts from '../hooks/usePosts'; // 🚀 Advanced hook import
+import usePosts from '../hooks/usePosts'; 
 
 const Home = () => {
   const [posts, isLoading] = usePosts();
@@ -15,7 +15,7 @@ const Home = () => {
   };
   return (
     <div className="w-full">
-      {/* 🚀 Vibrant Hero Section */}
+      {/* Hero Section */}
       <div className="bg-linear-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 md:p-10 text-white mb-10 shadow-lg relative overflow-hidden">
         <div className="relative z-10">
           <span className="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-semibold mb-4 inline-block backdrop-blur-sm">
@@ -38,7 +38,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* 728x90 Horizontal Ad Placement */}
       <div className="w-full bg-gray-50 border border-gray-100 flex items-center justify-center mb-10 rounded-xl shadow-inner overflow-hidden">
         <AdBanner width={728} height={90} dataKey="b3b1ebd27ac92c5620d056485b4c28f5" />
       </div>
@@ -47,7 +46,6 @@ const Home = () => {
         <h2 className="text-2xl font-bold text-gray-800">Latest Notes & Updates</h2>
       </div>
 
-      {/* Dynamic Data Mapping */}
       <div id='jobs' className="flex flex-col gap-6">
         {isLoading ? (
           <div className="text-center py-10 text-gray-500 font-medium animate-pulse">Loading amazing content...</div>
