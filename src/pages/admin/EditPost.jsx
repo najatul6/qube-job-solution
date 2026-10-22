@@ -8,7 +8,7 @@ const EditPost = () => {
   const { id } = useParams();
   const [formData, setFormData] = useState({
     title: '',
-    category: '', // 🚀 হার্ডকোড ভ্যালু রিমুভ করা হলো
+    category: '', 
     snippet: '',
     metaTitle: '',
     metaDescription: '',
@@ -21,7 +21,6 @@ const EditPost = () => {
   const [fetching, setFetching] = useState(true);
   const [message, setMessage] = useState({ type: '', text: '' });
 
-  // 🚀 ইনলাইন ক্যাটাগরি অ্যাড করার জন্য স্টেট
   const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [categoryLoading, setCategoryLoading] = useState(false);
@@ -29,7 +28,6 @@ const EditPost = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
- // 🚀 পোস্টের ডাটা এবং ক্যাটাগরি ফেচ করা
   useEffect(() => {
     const fetchPostAndCategories = async () => {
       try {
@@ -46,7 +44,6 @@ const EditPost = () => {
           setCategories(fetchedCategories);
         }
 
-        // 🚀 পুরনো স্ট্যাটিক নাম এবং নতুন স্লাগের কনফ্লিক্ট ফিক্স করা হচ্ছে
         let activeCategorySlug = postData.category || '';
         const matchedCat = fetchedCategories.find(
           (c) => c.slug === activeCategorySlug || c.name === activeCategorySlug
@@ -56,10 +53,9 @@ const EditPost = () => {
           activeCategorySlug = matchedCat.slug;
         }
 
-        // Post Data সেট করা
         setFormData({
           title: postData.title || '',
-          category: activeCategorySlug, // 🚀 সঠিক স্লাগ সেট করা হলো
+          category: activeCategorySlug, 
           snippet: postData.snippet || '',
           metaTitle: postData.metaTitle || '',
           metaDescription: postData.metaDescription || '',
@@ -80,7 +76,6 @@ const EditPost = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 🚀 ক্যাটাগরি ড্রপডাউন চেঞ্জ হ্যান্ডলার
   const handleCategoryChange = (e) => {
     const value = e.target.value;
     if (value === 'add_new_category') {
@@ -91,7 +86,6 @@ const EditPost = () => {
     }
   };
 
-  // 🚀 নতুন ক্যাটাগরি অ্যাড করার হ্যান্ডলার
   const handleAddNewCategory = async () => {
     if (!newCategoryName.trim()) return;
     setCategoryLoading(true);
@@ -172,7 +166,6 @@ const EditPost = () => {
             <input type="text" name="title" required value={formData.title} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none bg-gray-50 focus:bg-white" />
           </div>
           
-          {/* 🚀 ডাইনামিক ক্যাটাগরি সেকশন */}
           <div>
             <label className="block text-gray-700 font-bold mb-2 text-sm">Category</label>
             
