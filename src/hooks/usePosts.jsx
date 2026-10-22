@@ -4,7 +4,6 @@ import useAxiosPublic from './useAxiosPublic';
 const usePosts = () => {
   const axiosPublic = useAxiosPublic();
 
-  // useQuery er maddhome data fetch, cache ebong manage hobe
   const { data: posts = [], isLoading, refetch } = useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
