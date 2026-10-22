@@ -30,12 +30,11 @@ const CreatePost = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 🚀 ক্যাটাগরি ড্রপডাউন চেঞ্জ হ্যান্ডলার
   const handleCategoryChange = (e) => {
     const value = e.target.value;
     if (value === 'add_new_category') {
       setIsAddingNewCategory(true);
-      setFormData({ ...formData, category: '' }); // ড্রপডাউন ভ্যালু রিসেট করা
+      setFormData({ ...formData, category: '' }); 
     } else {
       setFormData({ ...formData, category: value });
     }
@@ -143,7 +142,7 @@ const CreatePost = () => {
               <select
                 name="category"
                 value={formData.category}
-                onChange={handleCategoryChange} // 🚀 নতুন হ্যান্ডলার যুক্ত করা হয়েছে
+                onChange={handleCategoryChange} 
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 outline-none bg-gray-50 focus:bg-white cursor-pointer"
                 required
               >
@@ -153,7 +152,6 @@ const CreatePost = () => {
                     {cat.name}
                   </option>
                 ))}
-                {/* 🚀 লিস্টের নিচে Add New অপশন */}
                 <option value="add_new_category" className="font-bold text-indigo-600 bg-indigo-50">
                   + Add New Category...
                 </option>
