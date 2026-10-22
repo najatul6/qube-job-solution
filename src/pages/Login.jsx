@@ -26,15 +26,12 @@ const Login = () => {
         password
       });
 
-      // লগিন সফল হলে টোকেন লোকাল স্টোরেজে সেভ করা
       const token = response.data.token;
       localStorage.setItem('access-token', token);
 
-      // Redux স্টেট আপডেট করা
       dispatch(loginSuccess({ user: { email }, token }));
       toast.success('Login Successful! Welcome to Admin Panel.');
       setLoading(false);
-      // লগিন শেষে অ্যাডমিন ড্যাশবোর্ডে পাঠিয়ে দেওয়া
       navigate('/admin/dashboard'); 
       
     } catch (err) {
@@ -47,7 +44,7 @@ const Login = () => {
   return (
     <div className="min-h-[80vh] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden relative">
-        <div className="h-3 w-full bg-gradient-to-r from-indigo-500 to-purple-600"></div>
+        <div className="h-3 w-full bg-linear-to-r from-indigo-500 to-purple-600"></div>
         
         <div className="p-8 sm:p-10">
           <div className="text-center mb-8">
