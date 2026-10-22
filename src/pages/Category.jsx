@@ -3,13 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import useAxiosPublic from '../hooks/useAxiosPublic';
 
 const Category = () => {
-    // URL থেকে categoryName ধরে নিচ্ছি
     const { categoryName } = useParams();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const axiosPublic = useAxiosPublic();
 
-    // URL এর নামটাকে সুন্দরভাবে দেখানোর জন্য ফরম্যাট করা
     const formatCategoryName = (name) => {
         if (!name) return '';
         return name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -23,7 +21,6 @@ const Category = () => {
             try {
                 const res = await axiosPublic.get('/api/posts');
 
-                // ফ্রন্টএন্ডে ফিল্টার করছি (URL এর ক্যাটাগরির সাথে মিলিয়ে)
                 const filtered = res.data.filter(post =>
                     post.category.toLowerCase().replace(/ /g, '-') === categoryName.toLowerCase()
                 );
