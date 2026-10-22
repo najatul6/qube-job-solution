@@ -18,7 +18,6 @@ const AdBanner = ({ width, height, dataKey }) => {
 
     const invokeScript = document.createElement('script');
     invokeScript.type = 'text/javascript';
-    // 🚀 আপনার দেওয়া নতুন লিংক অনুযায়ী আপডেট করা হয়েছে
     invokeScript.src = `https://bicea.org/22/${dataKey}`;
     invokeScript.async = true;
 
