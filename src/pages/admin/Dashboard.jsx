@@ -14,7 +14,6 @@ const Dashboard = () => {
   const axiosSecure = useAxiosSecure();
   const [posts, isLoading, refetch] = usePosts();
 
-  // 🚀 Category fetch korar jonno notun state
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -65,7 +64,6 @@ const Dashboard = () => {
     });
   };
 
-  // 🚀 Table-e category er nam onujayi alada rong deyar function
   const getCategoryColor = (categoryName) => {
     if (!categoryName) return 'bg-gray-100 text-gray-700';
 
@@ -77,18 +75,15 @@ const Dashboard = () => {
       'bg-orange-100 text-orange-700',
       'bg-teal-100 text-teal-700',
     ];
-    // Nam theke ekta fixed index ber kora jate same category sob somoy same rong pay
     const index = (categoryName.length + categoryName.charCodeAt(0)) % colors.length;
     return colors[index];
   };
 
   if (isLoading) return <div className="p-10 text-center text-gray-500 font-bold">Loading Dashboard Data...</div>;
 
-  // 🚀 Active/Inactive Category Calculation
   const activeCategories = new Set(posts.map(post => post.category));
   const activeCount = activeCategories.size;
   const totalCategoryCount = categories.length;
-  // Jodi post e emon kono category thake ja ekhono api theke aseni, tar jonno Math.max use kora holo
   const inactiveCount = Math.max(0, totalCategoryCount - activeCount);
 
   const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0);
@@ -123,7 +118,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* 🚀 Updated Categories Card (Active & Inactive) */}
+        {/*  Updated Categories Card (Active & Inactive) */}
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
           <div className="flex justify-between items-center mb-2">
             <h3 className="text-lg font-semibold text-gray-500">Categories</h3>
@@ -186,7 +181,7 @@ const Dashboard = () => {
                   <tr key={post._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                     <td className="p-4 font-bold text-indigo-900">{post.title}</td>
 
-                    {/* 🚀 Dynamic Colored Category Badge */}
+                    {/* Dynamic Colored Category Badge */}
                     <td className="p-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${getCategoryColor(post.category)}`}>
                         {post.category}
