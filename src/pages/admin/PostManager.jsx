@@ -60,7 +60,7 @@ const PostManager = () => {
 
     return (
         <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100">
-            {/* 🚀 Header, Search & Sort Controls */}
+            {/* Header, Search & Sort Controls */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4 border-b border-gray-100 pb-4">
                 <h2 className="text-xl font-bold text-gray-800 whitespace-nowrap">Manage Content</h2>
                 
@@ -112,7 +112,7 @@ const PostManager = () => {
                             </tr>
                         </thead>
                         <tbody className="text-gray-700 text-sm">
-                            {/* 🚀 Render Processed Posts */}
+                            {/* Render Processed Posts */}
                             {processedPosts.map((post) => (
                                 <tr key={post._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                                     <td className="p-4 font-bold text-indigo-900">{post.title}</td>

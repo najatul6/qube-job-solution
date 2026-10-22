@@ -4,7 +4,7 @@ const PostCard = ({ id, title, date, category, snippet, views }) => {
   return (
     <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md border border-gray-100 transition-all duration-300 group flex flex-col md:flex-row gap-6">
       
-      {/* 🚀 Left Content Area */}
+      {/* Left Content Area */}
       <div className="flex-1">
         <div className="flex items-center gap-3 mb-3">
           <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-bold tracking-wide">

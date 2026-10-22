@@ -48,10 +48,7 @@ const ErrorPage = () => {
             </Link>
           </div>
 
-          {/* ========================================================
-              🚀 DEVELOPMENT MODE ERROR DETAILS
-              (Uncomment the block below to see actual error messages)
-              ======================================================== */}
+        
           {/* 
           {error && (
             <div className="mt-10 p-5 bg-red-50/80 backdrop-blur-sm rounded-2xl border border-red-200 text-left overflow-auto max-w-full text-sm">

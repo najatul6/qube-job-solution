@@ -30,7 +30,7 @@ const BlogPost = () => {
 
   return (
     <div className="w-full">
-      {/* 🚀 Dynamic SEO Meta Tags for Google Ranking */}
+      {/* Dynamic SEO Meta Tags for Google Ranking */}
       <Helmet>
         <title>{post.metaTitle || post.title} | Qube Job Solution</title>
         <meta name="description" content={post.metaDescription || post.snippet} />
@@ -71,7 +71,7 @@ const BlogPost = () => {
           {post.title}
         </h1>
 
-        {/* 🚀 Dynamic HTML Content from React-Quill */}
+        {/* Dynamic HTML Content from React-Quill */}
         <div
           className="prose prose-lg prose-indigo max-w-none prose-headings:font-bold prose-a:text-indigo-600 prose-img:rounded-xl text-gray-700"
           dangerouslySetInnerHTML={{ __html: post.content }}

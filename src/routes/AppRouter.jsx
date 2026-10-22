@@ -23,7 +23,7 @@ const Disclaimer = React.lazy(() => import('../pages/Disclaimer'));
 const PageLoader = () => (
   <div className="flex h-screen w-full flex-col items-center justify-center bg-gray-50">
     
-    {/* 🚀 Animated Qube Logo */}
+    {/* Animated Qube Logo */}
     <div className="relative flex h-24 w-24 items-center justify-center">
       {/* Outer rotating border */}
       <div className="absolute h-full w-full animate-[spin_3s_linear_infinite] rounded-2xl border-4 border-indigo-200/50"></div>
@@ -31,11 +31,11 @@ const PageLoader = () => (
       {/* Inner reverse rotating solid cube */}
       <div className="absolute h-14 w-14 animate-[spin_2s_linear_infinite_reverse] rounded-xl bg-linear-to-tr from-indigo-600 to-purple-600 shadow-lg shadow-indigo-200"></div>
       
-      {/* Center 'Q' */}
+      {/* Center  Logo*/}
       <span className="z-10 text-3xl font-extrabold text-white">Q</span>
     </div>
     
-    {/* 🚀 Brand Name & Loading Text */}
+    {/* Brand Name & Loading Text */}
     <div className="mt-10 flex flex-col items-center space-y-3">
       <h2 className="text-xl md:text-2xl font-extrabold tracking-[0.2em] text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-purple-600 animate-pulse">
         QUBE JOB
@@ -54,7 +54,6 @@ const PageLoader = () => (
 const AppRouter = () => {
   return (
     <BrowserRouter>
-      {/* Suspense র‍্যাপার পেজ লোড হওয়ার সময় PageLoader দেখাবে */}
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* Public Routes */}

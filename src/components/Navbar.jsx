@@ -102,9 +102,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* =========================================
-          Animated Mobile Sidebar (Off-canvas)
-          ========================================= */}
 
       <div
         className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 md:hidden ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
