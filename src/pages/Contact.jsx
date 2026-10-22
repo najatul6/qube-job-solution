@@ -22,19 +22,16 @@ const Contact = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // ভ্যালিডেশন চেক
         if (!formData.name || !formData.email || !formData.message) {
             return toast.error("Please fill out all fields.");
         }
 
         setLoading(true);
         try {
-            // 🚀 ব্যাকএন্ডে ডেটা পাঠানোর API Call
             await axiosPublic.post('/api/contact', formData);
 
             toast.success('Message sent successfully! We will get back to you soon.');
 
-            // সাবমিট হওয়ার পর ফর্ম ক্লিয়ার করে দেওয়া
             setFormData({ name: '', email: '', message: '' });
         } catch (error) {
             console.error(error);

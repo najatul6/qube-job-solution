@@ -2,13 +2,11 @@ import { Link, useNavigate, useRouteError } from 'react-router-dom';
 
 const ErrorPage = () => {
   const navigate = useNavigate();
-  // 🚀 রাউটিং বা ডাটা ফেচিংয়ের আসল এরর ধরার জন্য
   const error = useRouteError(); 
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Background Animated Floating Blobs */}
       <div className="absolute top-10 left-10 md:top-20 md:left-20 w-64 h-64 md:w-96 md:h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse"></div>
       <div className="absolute top-40 right-10 md:right-20 w-64 h-64 md:w-96 md:h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse" style={{ animationDelay: '2s' }}></div>
       <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-64 h-64 md:w-96 md:h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse" style={{ animationDelay: '4s' }}></div>
