@@ -5,7 +5,6 @@ import PrivateRoute from './PrivateRoute';
 import Layout from '../components/Layout';
 import ErrorPage from '../pages/ErrorPage';
 
-// 🚀 Lazy Loading Imports (শুধু দরকারী পেজ লোড হবে)
 const Home = React.lazy(() => import('../pages/Home'));
 const BlogPost = React.lazy(() => import('../pages/BlogPost'));
 const Login = React.lazy(() => import('../pages/Login'));
@@ -21,7 +20,6 @@ const About = React.lazy(() => import('../pages/About'));
 const Terms = React.lazy(() => import('../pages/Terms'));
 const Disclaimer = React.lazy(() => import('../pages/Disclaimer'));
 
-// Loading Spinner Component (পেজ লোড হওয়ার সময় দেখাবে)
 const PageLoader = () => (
   <div className="flex h-screen w-full flex-col items-center justify-center bg-gray-50">
     
