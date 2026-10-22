@@ -9,7 +9,6 @@ const CategoryManager = () => {
   
   const axiosSecure = useAxiosSecure();
 
-  // Category fetch kora
   const fetchCategories = async () => {
     try {
       const { data } = await axiosSecure.get('/api/categories');
@@ -25,7 +24,6 @@ const CategoryManager = () => {
     fetchCategories();
   }, [axiosSecure]);
 
-  // Notun category add kora
   const handleCreate = async (e) => {
     e.preventDefault();
     if (!name.trim()) return;
@@ -39,7 +37,6 @@ const CategoryManager = () => {
       fetchCategories(); 
       setMessage({ type: 'success', text: 'Category added successfully!' });
       
-      // 3 second por success message hide kora
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } catch (error) {
       setMessage({ type: 'error', text: error.response?.data?.error || 'Failed to add category' });
@@ -48,12 +45,11 @@ const CategoryManager = () => {
     }
   };
 
-  // Category delete kora
   const handleDelete = async (id, categoryName) => {
     if (window.confirm(`Are you sure you want to delete "${categoryName}"?`)) {
       try {
         await axiosSecure.delete(`/api/categories/${id}`);
-        fetchCategories(); // Delete er por list update kora
+        fetchCategories(); 
       } catch (error) {
         alert('Error deleting category');
         console.error(error);
@@ -73,7 +69,7 @@ const CategoryManager = () => {
         </div>
       )}
 
-      {/* 🚀 Add Category Form */}
+      {/* Category Form */}
       <form onSubmit={handleCreate} className="flex gap-4 mb-10">
         <input
           type="text"
@@ -92,7 +88,6 @@ const CategoryManager = () => {
         </button>
       </form>
 
-      {/* 🚀 Categories List */}
       <div className="bg-white rounded-xl overflow-hidden border border-gray-200">
         <table className="w-full text-left border-collapse">
           <thead>
