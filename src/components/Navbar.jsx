@@ -5,11 +5,10 @@ import useAxiosPublic from '../hooks/useAxiosPublic';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const axiosPublic = useAxiosPublic(); // 🚀 হুক ইনিশিয়ালাইজ করা হলো
+  const axiosPublic = useAxiosPublic(); 
   
   const [categories, setCategories] = useState([]);
 
-  // 🚀 ডাটাবেজ থেকে ক্যাটাগরি ফেচ করা (পাবলিক API দিয়ে)
   useEffect(() => {
     const fetchCategories = async () => {
       try {

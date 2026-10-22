@@ -11,7 +11,6 @@ const AdminLayout = ({ children }) => {
     navigate('/login');
   };
 
-  // অ্যাকটিভ এবং ইন-অ্যাকটিভ লিংকের ডিজাইন
   const navClass = ({ isActive }) =>
     `block p-3 rounded-xl transition-all font-bold ${isActive
       ? 'bg-indigo-700 text-white shadow-inner'
@@ -43,7 +42,6 @@ const AdminLayout = ({ children }) => {
             📁 Manage Categories
           </NavLink>
 
-          {/* ওয়েবসাইটের লিংকে NavLink দরকার নেই কারণ এটি অন্য ট্যাবে ওপেন হবে */}
           <Link to="/" target="_blank" className="block p-3 rounded-xl text-indigo-200 hover:bg-indigo-800 hover:text-white transition-all font-bold mt-8 border border-indigo-800">
             🌐 View Website
           </Link>
