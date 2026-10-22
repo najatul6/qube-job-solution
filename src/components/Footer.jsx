@@ -7,7 +7,6 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
 
-          {/* Column 1: About */}
           <div>
             <h3 className="text-xl font-bold text-indigo-700 mb-4">
               Qube <span className="text-gray-800">Job Solution</span>
@@ -17,7 +16,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Column 2: Quick Links */}
           <div>
             <h4 className="text-lg font-semibold text-gray-800 mb-4">Categories</h4>
             <ul className="space-y-2 text-sm text-gray-500 font-medium">
@@ -28,7 +26,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 3: Legal & Support (AdSense Mandatory) */}
           <div>
             <h4 className="text-lg font-semibold text-gray-800 mb-4">Important Links</h4>
             <ul className="space-y-2 text-sm text-gray-500 font-medium">
@@ -44,7 +41,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Copyright */}
         <div className="border-t border-gray-100 pt-6 text-center text-gray-500 text-sm font-medium">
           <p>&copy; {new Date().getFullYear()} Qube Job Solution. All rights reserved.</p>
           <p className="mt-1">Developed with ❤️ for IT Professionals in Bangladesh.</p>
