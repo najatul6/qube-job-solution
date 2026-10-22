@@ -14,7 +14,7 @@ const ErrorPage = () => {
       <div className="relative z-10 text-center max-w-2xl mx-auto w-full">
         {/* Bouncing 404 Text */}
         <div className="animate-bounce mb-8">
-          <h1 className="text-9xl md:text-[160px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 drop-shadow-xl tracking-tighter">
+          <h1 className="text-9xl md:text-[160px] font-extrabold text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-purple-600 drop-shadow-xl tracking-tighter">
             404
           </h1>
         </div>
