@@ -9,7 +9,6 @@ const PostManager = () => {
     const axiosSecure = useAxiosSecure();
     const [posts, isLoading, refetch] = usePosts();
     
-    // 🚀 Search এবং Sort এর জন্য নতুন স্টেট
     const [searchQuery, setSearchQuery] = useState("");
     const [sortOption, setSortOption] = useState("date-desc");
 
@@ -41,7 +40,6 @@ const PostManager = () => {
         });
     };
 
-    // 🚀 ফিল্টারিং এবং সর্টিং লজিক
     const processedPosts = posts
         ?.filter((post) => {
             const searchLower = searchQuery.toLowerCase();
